@@ -8,7 +8,7 @@ const monaSans = Mona_Sans({
 });
 
 export const metadata: Metadata = {
-    title: "Free Job Interview",
+    title: "AI Job Interview",
     description: "An AI-powered mock interview application",
 };
 
