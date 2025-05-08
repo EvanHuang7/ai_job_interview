@@ -6,6 +6,7 @@ import {useRouter} from "next/navigation";
 
 import {cn} from "@/lib/utils";
 import {vapi} from "@/lib/vapi.sdk";
+import {interviewer} from "@/constants";
 
 enum CallStatus {
     INACTIVE = "INACTIVE",
@@ -85,9 +86,17 @@ const Agent = ({
             setLastMessage(messages[messages.length - 1].content);
         }
 
+        const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+            console.log("handleGenerateFeedback");
+            router.push(`/interview/${interviewId}/feedback`);
+
+        };
+
         if (callStatus === CallStatus.FINISHED) {
             if (type === "generate") {
                 router.push("/");
+            } else {
+                handleGenerateFeedback(messages);
             }
         }
     }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
@@ -100,6 +109,19 @@ const Agent = ({
                 variableValues: {
                     username: userName,
                     userid: userId,
+                },
+            });
+        } else {
+            let formattedQuestions = "";
+            if (questions) {
+                formattedQuestions = questions
+                    .map((question) => `- ${question}`)
+                    .join("\n");
+            }
+
+            await vapi.start(interviewer, {
+                variableValues: {
+                    questions: formattedQuestions,
                 },
             });
         }
