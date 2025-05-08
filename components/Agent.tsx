@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import Image from "next/image";
 
 import {cn} from "@/lib/utils";
 import {vapi} from "@/lib/vapi.sdk";
@@ -29,11 +29,12 @@ const Agent = ({
                    type,
                    questions,
                }: AgentProps) => {
-    const router = useRouter();
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
     const [messages, setMessages] = useState<SavedMessage[]>([]);
-    const [isSpeaking, setIsSpeaking] = useState(false);
+    const [isAiSpeaking, setIsAiSpeaking] = useState(false);
     const [lastMessage, setLastMessage] = useState<string>("");
+
+    const router = useRouter();
 
     useEffect(() => {
         const onCallStart = () => {
@@ -47,18 +48,19 @@ const Agent = ({
         const onMessage = (message: Message) => {
             if (message.type === "transcript" && message.transcriptType === "final") {
                 const newMessage = {role: message.role, content: message.transcript};
+                console.log("newMessage in onMessage()", newMessage)
                 setMessages((prev) => [...prev, newMessage]);
             }
         };
 
         const onSpeechStart = () => {
             console.log("speech start");
-            setIsSpeaking(true);
+            setIsAiSpeaking(true);
         };
 
         const onSpeechEnd = () => {
             console.log("speech end");
-            setIsSpeaking(false);
+            setIsAiSpeaking(false);
         };
 
         const onError = (error: Error) => {
@@ -90,24 +92,6 @@ const Agent = ({
             setLastMessage(messages[messages.length - 1].content);
         }
 
-        const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-            console.log("handleGenerateFeedback");
-
-            const {success, feedbackId: id} = await createFeedback({
-                interviewId: interviewId!,
-                userId: userId!,
-                transcript: messages,
-                feedbackId,
-            });
-
-            if (success && id) {
-                router.push(`/interview/${interviewId}/feedback`);
-            } else {
-                console.log("Error saving feedback");
-                router.push("/");
-            }
-        };
-
         if (callStatus === CallStatus.FINISHED) {
             if (type === "generate") {
                 router.push("/");
@@ -135,8 +119,6 @@ const Agent = ({
                     .join("\n");
             }
 
-            // TODO: update interviewer script to let AI not stop user's speaking until user finish
-            // TODO: or update to press blank button to stop and speak
             await vapi.start(interviewer, {
                 variableValues: {
                     questions: formattedQuestions,
@@ -148,6 +130,24 @@ const Agent = ({
     const handleDisconnect = () => {
         setCallStatus(CallStatus.FINISHED);
         vapi.stop();
+    };
+
+    const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+        console.log("handleGenerateFeedback");
+
+        const {success, feedbackId: id} = await createFeedback({
+            interviewId: interviewId!,
+            userId: userId!,
+            transcript: messages,
+            feedbackId,
+        });
+
+        if (success && id) {
+            router.push(`/interview/${interviewId}/feedback`);
+        } else {
+            console.log("Error saving feedback");
+            router.push("/");
+        }
     };
 
     return (
@@ -163,7 +163,7 @@ const Agent = ({
                             height={54}
                             className="object-cover"
                         />
-                        {isSpeaking && <span className="animate-speak"/>}
+                        {isAiSpeaking && <span className="animate-speak"/>}
                     </div>
                     <h3>AI Interviewer</h3>
                 </div>

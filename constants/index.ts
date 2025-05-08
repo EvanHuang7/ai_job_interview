@@ -98,7 +98,7 @@ export const mappings = {
 };
 
 export const interviewer: CreateAssistantDTO = {
-  name: "Interviewer",
+  name: "Emily",
   firstMessage:
       "Hello! Thank you for taking the time to speak with me today. I'm excited to learn more about you and your experience.",
   transcriber: {
@@ -114,6 +114,13 @@ export const interviewer: CreateAssistantDTO = {
     speed: 0.9,
     style: 0.5,
     useSpeakerBoost: true,
+  },
+  startSpeakingPlan: {
+    waitSeconds: 3,
+    smartEndpointingPlan: {
+      provider: "livekit",
+      waitFunction: "700 + 4000 * max(0, x-0.5)",
+    },
   },
   model: {
     provider: "openai",
