@@ -4,8 +4,8 @@ import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
 
-import {getCurrentUser} from "@/lib/actions/auth.action";
-import {getInterviewsByUserId, getLatestInterviews,} from "@/lib/actions/general.action";
+import {getCurrentUser} from "@/server/authService";
+import {getInterviewsByUserId, getLatestInterviews,} from "@/server/interviewService";
 
 
 async function Home() {

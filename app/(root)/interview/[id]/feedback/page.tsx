@@ -3,9 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import {redirect} from "next/navigation";
 
-import {getFeedbackByInterviewId, getInterviewById,} from "@/lib/actions/general.action";
+import {getFeedbackByInterviewId, getInterviewById,} from "@/server/interviewService";
 import {Button} from "@/components/ui/button";
-import {getCurrentUser} from "@/lib/actions/auth.action";
+import {getCurrentUser} from "@/server/authService";
 
 const Feedback = async ({params}: RouteParams) => {
     const {id} = await params;

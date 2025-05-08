@@ -4,8 +4,8 @@ import {redirect} from "next/navigation";
 import Agent from "@/components/Agent";
 import {getRandomInterviewCover} from "@/lib/utils";
 
-import {getFeedbackByInterviewId, getInterviewById,} from "@/lib/actions/general.action";
-import {getCurrentUser} from "@/lib/actions/auth.action";
+import {getFeedbackByInterviewId, getInterviewById,} from "@/server/interviewService";
+import {getCurrentUser} from "@/server/authService";
 import DisplayTechIcons from "@/components/DisplayTechIcons";
 
 const InterviewDetails = async ({params}: RouteParams) => {

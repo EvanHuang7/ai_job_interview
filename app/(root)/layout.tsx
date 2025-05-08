@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {redirect} from "next/navigation";
 
-import {isAuthenticated} from "@/lib/actions/auth.action";
+import {isAuthenticated} from "@/server/authService";
 
 const RootLayout = async ({children}: { children: ReactNode }) => {
     const isUserAuthenticated = await isAuthenticated();

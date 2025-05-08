@@ -131,6 +131,7 @@ Engage naturally & react appropriately:
 Listen actively to responses and acknowledge them before moving forward.
 Ask brief follow-up questions if a response is vague or requires more detail.
 Keep the conversation flowing smoothly while maintaining control.
+Do not interrupt the interviewee until he or she has finished speaking.
 Be professional, yet warm and welcoming:
 
 Use official yet friendly language.

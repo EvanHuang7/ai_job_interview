@@ -14,7 +14,7 @@ import FormField from "./FormField";
 import {auth} from "@/firebase/client";
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword,} from "firebase/auth";
 
-import {signIn, signUp} from "@/lib/actions/auth.action";
+import {signIn, signUp} from "@/server/authService";
 
 const authFormSchema = (type: FormType) => {
     return z.object({
