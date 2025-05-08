@@ -6,6 +6,7 @@ import {Button} from "./ui/button";
 import DisplayTechIcons from "./DisplayTechIcons";
 
 import {cn, getRandomInterviewCover} from "@/lib/utils";
+import {getFeedbackByInterviewId} from "@/lib/actions/general.action";
 
 const InterviewCard = async ({
                                  interviewId,
@@ -15,8 +16,13 @@ const InterviewCard = async ({
                                  techstack,
                                  createdAt,
                              }: InterviewCardProps) => {
-
-    const feedback = null
+    const feedback =
+        userId && interviewId
+            ? await getFeedbackByInterviewId({
+                interviewId,
+                userId,
+            })
+            : null;
 
     const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
 
