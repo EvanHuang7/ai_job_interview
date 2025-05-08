@@ -62,6 +62,9 @@ const Agent = ({
         };
 
         const onError = (error: Error) => {
+            // Ignore specific "meeting ended" errors
+            if (error.message.includes("Meeting has ended")) return;
+
             console.log("Error:", error);
         };
 
@@ -132,6 +135,8 @@ const Agent = ({
                     .join("\n");
             }
 
+            // TODO: update interviewer script to let AI not stop user's speaking until user finish
+            // TODO: or update to press blank button to stop and speak
             await vapi.start(interviewer, {
                 variableValues: {
                     questions: formattedQuestions,
