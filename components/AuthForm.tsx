@@ -11,7 +11,7 @@ import {Form} from "@/components/ui/form"
 import {toast} from "sonner";
 import FormField from "./FormField";
 
-import {auth} from "@/firebase/client";
+import {auth} from "@/lib/firebase/client";
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword,} from "firebase/auth";
 
 import {signIn, signUp} from "@/server/authService";

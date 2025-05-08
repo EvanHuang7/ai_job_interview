@@ -4,7 +4,7 @@ import {generateObject} from "ai";
 import {google} from "@ai-sdk/google";
 
 import {feedbackSchema} from "@/constants";
-import {db} from "@/firebase/admin";
+import {db} from "@/lib/firebase/admin";
 
 
 export async function getInterviewsByUserId(
