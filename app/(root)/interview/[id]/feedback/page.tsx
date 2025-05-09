@@ -90,9 +90,9 @@ const Feedback = async ({params}: RouteParams) => {
             </div>
 
             <div className="buttons">
-                <Button className="btn-secondary flex-1">
+                <Button className="btn-primary flex-1">
                     <Link href="/" className="flex w-full justify-center">
-                        <p className="text-sm font-semibold text-primary-200 text-center">
+                        <p className="text-sm font-semibold  text-center">
                             Back to dashboard
                         </p>
                     </Link>

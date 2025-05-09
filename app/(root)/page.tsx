@@ -18,7 +18,7 @@ async function Home() {
     return (
         <>
             <section className="flex flex-col gap-6 mt-8">
-                <h2>Your Interviews</h2>
+                <h2>New Interviews</h2>
 
                 <div className="interviews-section">
                     {hasPastInterviews ? (
@@ -40,7 +40,7 @@ async function Home() {
             </section>
 
             <section className="flex flex-col gap-6 mt-8">
-                <h2>Take Interviews</h2>
+                <h2>Finished Interviews</h2>
 
                 <div className="interviews-section">
                     {hasUpcomingInterviews ? (
