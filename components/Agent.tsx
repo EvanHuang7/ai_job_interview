@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import Image from "next/image";
 
@@ -32,9 +32,24 @@ const Agent = ({
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
     const [messages, setMessages] = useState<SavedMessage[]>([]);
     const [isAiSpeaking, setIsAiSpeaking] = useState(false);
-    const [lastMessage, setLastMessage] = useState<string>("");
+    // Group messages by consecutive same-role
+    const groupedMessages = useMemo(() => {
+        const groups: { role: string; content: string }[] = [];
+
+        for (const msg of messages) {
+            const last = groups[groups.length - 1];
+            if (last && last.role === msg.role) {
+                last.content += ` ${msg.content}`;
+            } else {
+                groups.push({role: msg.role, content: msg.content});
+            }
+        }
+
+        return groups;
+    }, [messages]);
 
     const router = useRouter();
+    const transcriptEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const onCallStart = () => {
@@ -88,10 +103,6 @@ const Agent = ({
     }, []);
 
     useEffect(() => {
-        if (messages.length > 0) {
-            setLastMessage(messages[messages.length - 1].content);
-        }
-
         if (callStatus === CallStatus.FINISHED) {
             if (type === "generate") {
                 router.push("/");
@@ -100,6 +111,12 @@ const Agent = ({
             }
         }
     }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
+
+    useEffect(() => {
+        if (transcriptEndRef.current) {
+            transcriptEndRef.current.scrollIntoView({behavior: "smooth"});
+        }
+    }, [messages]);
 
     const handleCall = async () => {
         setCallStatus(CallStatus.CONNECTING);
@@ -155,15 +172,15 @@ const Agent = ({
             <div className="flex flex-col sm:flex-row gap-10 items-center justify-between w-full">
                 {/* AI Interviewer Card */}
                 <div
-                    className="flex-center flex-col gap-2 p-7 h-[400px] blue-gradient-dark rounded-lg border-2 border-primary-200/50 flex-1 sm:basis-1/2 w-full">
+                    className="flex-center flex-col gap-2 p-7 w-full h-[400px] blue-gradient-dark rounded-lg border-2 border-primary-200/50 flex-1 sm:basis-1/2">
                     <div
                         className="z-10 flex items-center justify-center blue-gradient rounded-full size-[120px] relative">
                         <Image
-                            src="/ai-avatar.png"
+                            src="/ai-emily.jpg"
                             alt="profile-image"
-                            width={65}
-                            height={54}
-                            className="object-cover"
+                            width={539}
+                            height={539}
+                            className="rounded-full object-cover size-[120px]"
                         />
                         {isAiSpeaking && <span
                             className="absolute inline-flex size-5/6 animate-ping rounded-full bg-primary-200 opacity-75"/>}
@@ -172,7 +189,7 @@ const Agent = ({
                 </div>
 
                 {/* User Profile Card */}
-                <div className="border-gradient p-0.5 rounded-2xl flex-1 sm:basis-1/2 w-full h-[400px] max-md:hidden">
+                <div className="border-gradient p-0.5 rounded-2xl flex-1 sm:basis-1/2 w-full h-[400px] max-lg:hidden">
                     <div
                         className="flex flex-col gap-2 justify-center items-center p-7 dark-gradient rounded-2xl min-h-full">
                         <Image
@@ -185,23 +202,30 @@ const Agent = ({
                         <h3 className="text-center text-primary-100 mt-5">{userName}</h3>
                     </div>
                 </div>
-            </div>
 
-            {messages.length > 0 && (
-                <div className="border-gradient p-0.5 rounded-2xl w-full">
-                    <div className="dark-gradient rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center">
-                        <p
-                            key={lastMessage}
-                            className={cn(
-                                "text-lg text-center text-white transition-opacity duration-500 opacity-0",
-                                "animate-fadeIn opacity-100"
-                            )}
-                        >
-                            {lastMessage}
-                        </p>
+                {/* Transcript */}
+                <div className="border-gradient p-0.5 rounded-2xl w-full sm:w-1/3 h-[400px]">
+                    <div className="dark-gradient rounded-2xl h-full px-5 py-3 overflow-y-auto space-y-3">
+                        {groupedMessages.map((msg, idx) => (
+                            <div
+                                key={idx}
+                                className={cn(
+                                    "text-sm text-white px-3 py-2 rounded-xl max-w-[90%] whitespace-pre-wrap",
+                                    msg.role === "user"
+                                        ? "bg-primary-700 self-end text-right ml-auto"
+                                        : "bg-muted text-left mr-auto"
+                                )}
+                            >
+                                <strong className="block mb-1 capitalize text-xs opacity-80">{msg.role}:</strong>
+                                {msg.content}
+                            </div>
+                        ))}
+                        <div ref={transcriptEndRef}/>
                     </div>
                 </div>
-            )}
+
+            </div>
+
 
             <div className="w-full flex justify-center">
                 {callStatus !== "ACTIVE" ? (
