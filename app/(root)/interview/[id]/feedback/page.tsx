@@ -35,7 +35,7 @@ const Feedback = async ({params}: RouteParams) => {
                         <Image src="/star.svg" width={22} height={22} alt="star"/>
                         <p>
                             Overall Impression:{" "}
-                            <span className="text-primary-200 font-bold">
+                            <span className="font-bold">
                 {feedback?.totalScore}
               </span>
                             /100

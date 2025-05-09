@@ -207,6 +207,7 @@ const Agent = ({
 
                 {/* Transcript */}
                 <div className="dark-gradient border-2 p-0.5 rounded-2xl w-full sm:w-1/3 h-[400px] flex flex-col">
+                    <h3 className="text-center mt-2 pb-2 border-b-2">Chat history</h3>
                     <div className="flex-1 px-5 py-3 overflow-y-auto space-y-3">
                         {groupedMessages.map((msg, idx) => (
                             <div
