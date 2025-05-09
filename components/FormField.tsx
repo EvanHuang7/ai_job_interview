@@ -2,6 +2,7 @@ import {Control, Controller, FieldValues, Path} from "react-hook-form";
 
 import {FormControl, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
+import {cn} from "@/lib/utils";
 
 interface FormFieldProps<T extends FieldValues> {
     control: Control<T>;
@@ -22,12 +23,12 @@ const FormField = <T extends FieldValues>({
         <Controller
             control={control}
             name={name}
-            render={({field}) => (
+            render={({field, fieldState}) => (
                 <FormItem>
                     <FormLabel className="label">{label}</FormLabel>
                     <FormControl>
                         <Input
-                            className="input"
+                            className={cn("input", fieldState.error && "border-red-500")}
                             type={type}
                             placeholder={placeholder}
                             {...field}

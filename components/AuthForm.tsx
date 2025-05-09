@@ -18,9 +18,17 @@ import {signIn, signUp} from "@/server/authService";
 
 const authFormSchema = (type: FormType) => {
     return z.object({
-        name: type === "sign-up" ? z.string().min(3) : z.string().optional(),
-        email: z.string().email(),
-        password: z.string().min(6),
+        name: type === "sign-up"
+            ? z.string()
+                .min(3, "Name must be at least 3 characters")
+                .max(30, "Name must be less than 50 characters")
+            : z.string().optional(),
+        email: z.string()
+            .min(1, "Email is required")
+            .email("Enter a valid email"),
+        password: z.string()
+            .min(6, "Password must be at least 6 characters")
+            .max(20, "Password is too long"),
     });
 };
 
@@ -104,7 +112,12 @@ const AuthForm = ({type}: { type: FormType }) => {
                 </div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form">
+                    <form noValidate onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                        const firstError = Object.values(errors)[0];
+                        if (firstError && firstError.message) {
+                            toast.error(firstError.message.toString());
+                        }
+                    })} className="w-full space-y-6 mt-4 form">
                         {!isSignIn && (
                             <FormField
                                 control={form.control}
