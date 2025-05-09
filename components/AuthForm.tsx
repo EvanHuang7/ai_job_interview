@@ -115,11 +115,12 @@ const AuthForm = ({type}: { type: FormType }) => {
     const isSignIn = type === "sign-in"
 
     return (
-        <div className="card-border lg:min-w-[566px]">
-            <div className="flex flex-col gap-6 card py-14 px-10">
-                <div className="flex flex-row gap-2 justify-center">
-                    <Image src="/logo.svg" alt="logo" height={32} width={38}/>
-                    <h2 className="text-primary-100">AI Job Interview</h2>
+        <div className="card-border sm:min-w-[400px] md:min-w-[566px] mt-10">
+            <div className="flex flex-col gap-6 py-14 px-10 dark-gradient rounded-2xl">
+                <div className="flex flex-col gap-2 items-center text-center">
+                    <Image className="animate-pulse" src="/logo.svg" alt="logo" height={32} width={38}/>
+                    {type === "sign-in" ? (<h2 className="text-primary-100">Welcome Back</h2>) : (
+                        <h2 className="text-primary-100">Create Account</h2>)}
                 </div>
 
                 <Form {...form}>

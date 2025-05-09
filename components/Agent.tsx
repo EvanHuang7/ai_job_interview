@@ -186,7 +186,7 @@ const Agent = ({
                         {isAiSpeaking && <span
                             className="absolute inline-flex size-5/6 animate-ping rounded-full bg-primary-200 opacity-75"/>}
                     </div>
-                    <h3 className="text-center text-primary-100 mt-5">AI Interviewer</h3>
+                    <h3 className="text-center  mt-5">AI Interviewer</h3>
                 </div>
 
                 {/* User Profile Card */}
@@ -201,7 +201,7 @@ const Agent = ({
                             height={539}
                             className="rounded-full object-cover size-[120px]"
                         />
-                        <h3 className="text-center text-primary-100 mt-5">{userName}</h3>
+                        <h3 className="text-center mt-5">{userName}</h3>
                     </div>
                 </div>
 
