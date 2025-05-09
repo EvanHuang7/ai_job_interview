@@ -8,6 +8,7 @@ import {cn} from "@/lib/utils";
 import {vapi} from "@/lib/vapi.sdk";
 import {interviewer} from "@/constants";
 import {createFeedback} from "@/server/interviewService";
+import {Button} from "@/components/ui/button";
 
 enum CallStatus {
     INACTIVE = "INACTIVE",
@@ -205,8 +206,8 @@ const Agent = ({
                 </div>
 
                 {/* Transcript */}
-                <div className="dark-gradient border-2 p-0.5 rounded-2xl w-full sm:w-1/3 h-[400px]">
-                    <div className="rounded-2xl h-full px-5 py-3 overflow-y-auto space-y-3">
+                <div className="dark-gradient border-2 p-0.5 rounded-2xl w-full sm:w-1/3 h-[400px] flex flex-col">
+                    <div className="flex-1 px-5 py-3 overflow-y-auto space-y-3">
                         {groupedMessages.map((msg, idx) => (
                             <div
                                 key={idx}
@@ -230,24 +231,24 @@ const Agent = ({
 
             <div className="w-full flex justify-center">
                 {callStatus !== "ACTIVE" ? (
-                    <button className="relative btn-call" onClick={() => handleCall()}>
-            <span
-                className={cn(
-                    "absolute animate-ping rounded-full opacity-75",
-                    callStatus !== "CONNECTING" && "hidden"
-                )}
-            />
+                    <Button className="relative btn-primary" onClick={() => handleCall()}>
+                <span
+                    className={cn(
+                        "absolute animate-ping rounded-full opacity-75",
+                        callStatus !== "CONNECTING" && "hidden"
+                    )}
+                />
 
                         <span className="relative">
               {callStatus === "INACTIVE" || callStatus === "FINISHED"
-                  ? "Call"
+                  ? "Start"
                   : ". . ."}
             </span>
-                    </button>
+                    </Button>
                 ) : (
-                    <button className="btn-disconnect" onClick={() => handleDisconnect()}>
+                    <Button className="btn-primary" variant="destructive" onClick={() => handleDisconnect()}>
                         End
-                    </button>
+                    </Button>
                 )}
             </div>
         </>
