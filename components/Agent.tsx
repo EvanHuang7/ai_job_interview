@@ -113,7 +113,7 @@ const Agent = ({
     }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
 
     useEffect(() => {
-        if (transcriptEndRef.current) {
+        if (messages.length > 0 && transcriptEndRef.current) {
             transcriptEndRef.current.scrollIntoView({behavior: "smooth"});
         }
     }, [messages]);
