@@ -172,9 +172,9 @@ const Agent = ({
             <div className="flex flex-col sm:flex-row gap-10 items-center justify-between w-full">
                 {/* AI Interviewer Card */}
                 <div
-                    className="flex-center flex-col gap-2 p-7 w-full h-[400px] blue-gradient-dark rounded-lg border-2 border-primary-200/50 flex-1 sm:basis-1/2">
+                    className="dark-gradient border-2 flex-center flex-col gap-2 p-7 rounded-lg flex-1 sm:basis-1/2 w-full h-[400px]">
                     <div
-                        className="z-10 flex items-center justify-center blue-gradient rounded-full size-[120px] relative">
+                        className="z-10 flex items-center justify-center rounded-full size-[120px] relative">
                         <Image
                             src="/ai-emily.jpg"
                             alt="profile-image"
@@ -189,9 +189,10 @@ const Agent = ({
                 </div>
 
                 {/* User Profile Card */}
-                <div className="border-gradient p-0.5 rounded-2xl flex-1 sm:basis-1/2 w-full h-[400px] max-lg:hidden">
+                <div
+                    className="dark-gradient border-2 p-0.5 rounded-2xl flex-1 sm:basis-1/2 w-full h-[400px] max-lg:hidden">
                     <div
-                        className="flex flex-col gap-2 justify-center items-center p-7 dark-gradient rounded-2xl min-h-full">
+                        className="flex flex-col gap-2 justify-center items-center p-7 rounded-2xl min-h-full">
                         <Image
                             src="/user-avatar.png"
                             alt="profile-image"
@@ -204,8 +205,8 @@ const Agent = ({
                 </div>
 
                 {/* Transcript */}
-                <div className="border-gradient p-0.5 rounded-2xl w-full sm:w-1/3 h-[400px]">
-                    <div className="dark-gradient rounded-2xl h-full px-5 py-3 overflow-y-auto space-y-3">
+                <div className="dark-gradient border-2 p-0.5 rounded-2xl w-full sm:w-1/3 h-[400px]">
+                    <div className="rounded-2xl h-full px-5 py-3 overflow-y-auto space-y-3">
                         {groupedMessages.map((msg, idx) => (
                             <div
                                 key={idx}
