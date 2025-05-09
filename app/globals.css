@@ -140,9 +140,9 @@
     @apply bg-background text-foreground;
   }
 
-  p {
-    @apply text-light-100;
-  }
+  /*p {*/
+  /*  @apply text-light-100;*/
+  /*}*/
 
   h2 {
     @apply text-3xl font-semibold;
@@ -176,22 +176,6 @@
 
   .card {
     @apply dark-gradient rounded-2xl min-h-full;
-  }
-
-  .form {
-    @apply w-full;
-
-    .label {
-      @apply !text-light-100 !font-normal;
-    }
-
-    .input {
-      @apply !bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:!text-light-100;
-    }
-
-    .btn {
-      @apply !w-full !bg-primary-200 !text-dark-100 hover:!bg-primary-200/80 !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer;
-    }
   }
 
 

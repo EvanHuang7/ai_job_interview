@@ -25,10 +25,10 @@ const FormField = <T extends FieldValues>({
             name={name}
             render={({field, fieldState}) => (
                 <FormItem>
-                    <FormLabel className="label">{label}</FormLabel>
+                    <FormLabel className="!font-normal">{label}</FormLabel>
                     <FormControl>
                         <Input
-                            className={cn("input", fieldState.error && "border-red-500")}
+                            className={cn("!bg-dark-200 !rounded-full !min-h-12 !px-5", fieldState.error && "border-red-500")}
                             type={type}
                             placeholder={placeholder}
                             {...field}
