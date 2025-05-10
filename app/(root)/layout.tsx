@@ -21,13 +21,17 @@ const RootLayout = async ({children}: { children: ReactNode }) => {
                 </nav>
 
                 <div className="flex flex-row items-center gap-2">
-                    <Button className="flx items-center gap-2 btn-primary" variant="outline">
+                    <Button
+                        className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full">
                         <Link href="/interview">Generate Interview</Link>
                     </Button>
-                    <Button className="flx items-center gap-2 btn-primary" variant="outline">
+                    <Button
+                        className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full">
                         <Link href="/interview">Setting</Link>
                     </Button>
-                    <Button className="flx items-center gap-2 btn-primary" variant="outline" onClick={signOut}>
+                    <Button
+                        className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full"
+                        onClick={signOut}>
                         <Link href="/sign-in">Logout</Link>
                     </Button>
                 </div>

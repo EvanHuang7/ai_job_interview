@@ -22,10 +22,12 @@ const AuthLayout = async ({children}: { children: ReactNode }) => {
                     </nav>
 
                     <div className="flex flex-row items-center gap-2">
-                        <Button className="flx items-center gap-2 btn-primary" variant="outline">
+                        <Button
+                            className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full">
                             <Link href="/sign-in">Sign in</Link>
                         </Button>
-                        <Button className="flx items-center gap-2 btn-primary" variant="outline">
+                        <Button
+                            className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full">
                             <Link href="/sign-up">Sign up</Link>
                         </Button>
                     </div>
