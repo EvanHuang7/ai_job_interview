@@ -138,10 +138,6 @@
     @apply bg-background text-foreground;
   }
 
-  /*p {*/
-  /*  @apply text-light-100;*/
-  /*}*/
-
   h2 {
     @apply text-3xl font-semibold;
   }
@@ -153,20 +149,12 @@
   ul {
     @apply list-disc list-inside;
   }
-
-  /*li {*/
-  /*  @apply text-light-100;*/
-  /*}*/
 }
 
 @layer components {
   .btn-primary {
     @apply w-fit !rounded-full !font-bold px-5 cursor-pointer min-h-10;
   }
-
-  /*.btn-secondary {*/
-  /*  @apply w-fit !bg-dark-200 !text-primary-200 hover:!bg-dark-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;*/
-  /*}*/
 
   .card-border {
     @apply border-gradient p-0.5 rounded-2xl w-fit;
