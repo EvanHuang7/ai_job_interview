@@ -3,27 +3,7 @@
 import {auth, db} from "@/lib/firebase/admin";
 import {cookies} from "next/headers";
 
-// Session duration (1 week)
 const SESSION_DURATION = 60 * 60 * 24 * 7;
-
-// Set session cookie
-export async function setSessionCookie(idToken: string) {
-    const cookieStore = await cookies();
-
-    // Create session cookie
-    const sessionCookie = await auth.createSessionCookie(idToken, {
-        expiresIn: SESSION_DURATION * 1000, // milliseconds
-    });
-
-    // Set cookie in the browser
-    cookieStore.set("session", sessionCookie, {
-        maxAge: SESSION_DURATION,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        sameSite: "lax",
-    });
-}
 
 export async function signUp(params: SignUpParams) {
     const {uid, name, email} = params;
@@ -41,8 +21,6 @@ export async function signUp(params: SignUpParams) {
         await db.collection("users").doc(uid).set({
             name,
             email,
-            // profileURL,
-            // resumeURL,
         });
 
         return {
@@ -89,14 +67,12 @@ export async function signIn(params: SignInParams) {
     }
 }
 
-// Sign out user by clearing the session cookie
 export async function signOut() {
     const cookieStore = await cookies();
 
     cookieStore.delete("session");
 }
 
-// Get current user from session cookie
 export async function getCurrentUser(): Promise<User | null> {
     const cookieStore = await cookies();
 
@@ -125,8 +101,52 @@ export async function getCurrentUser(): Promise<User | null> {
     }
 }
 
-// Check if user is authenticated
 export async function isAuthenticated() {
     const user = await getCurrentUser();
     return !!user;
+}
+
+export async function updateProfile(params: UpdateProfileParams) {
+    const {userId, name, resume, profilePic} = params;
+
+    try {
+        // TODO: check profilePic and upload it to cloadinary
+
+        const userRef = db.collection("users").doc(userId);
+
+        await userRef.update({
+            name: name,
+            resume: resume,
+        });
+
+        return {
+            success: true,
+            message: "User updated successfully",
+        };
+    } catch (error: any) {
+        console.error("Error updating user:", error);
+        return {
+            success: false,
+            message: error.message || "Failed to update user",
+        };
+    }
+}
+
+// Set session cookie
+export async function setSessionCookie(idToken: string) {
+    const cookieStore = await cookies();
+
+    // Create session cookie
+    const sessionCookie = await auth.createSessionCookie(idToken, {
+        expiresIn: SESSION_DURATION * 1000, // milliseconds
+    });
+
+    // Set cookie in the browser
+    cookieStore.set("session", sessionCookie, {
+        maxAge: SESSION_DURATION,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        sameSite: "lax",
+    });
 }
