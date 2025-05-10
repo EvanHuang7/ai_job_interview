@@ -8,9 +8,15 @@ async function Home() {
     const user = await getCurrentUser();
 
     const userInterviews = await getInterviewsByUserId(user?.id!);
+    const newInterviews = userInterviews?.filter(
+        (interview) => interview.feedbacksNum === 0
+    );
+    const finishedFeedback = userInterviews?.filter(
+        (interview) => interview.feedbacksNum >= 1
+    );
 
-    const hasPastInterviews = userInterviews?.length! > 0;
-    const hasUpcomingInterviews = userInterviews?.length! > 0;
+    const hasNewInterviews = newInterviews?.length! > 0;
+    const hasFinishedInterviews = finishedFeedback?.length! > 0;
 
     return (
         <>
@@ -18,8 +24,8 @@ async function Home() {
                 <h2>New Interviews</h2>
 
                 <div className="interviews-section">
-                    {hasPastInterviews ? (
-                        userInterviews?.map((interview) => (
+                    {hasNewInterviews ? (
+                        newInterviews?.map((interview) => (
                             <InterviewCard
                                 key={interview.id}
                                 userId={user?.id}
@@ -40,8 +46,8 @@ async function Home() {
                 <h2>Finished Interviews</h2>
 
                 <div className="interviews-section">
-                    {hasUpcomingInterviews ? (
-                        userInterviews?.map((interview) => (
+                    {hasFinishedInterviews ? (
+                        finishedFeedback?.map((interview) => (
                             <InterviewCard
                                 key={interview.id}
                                 userId={user?.id}
