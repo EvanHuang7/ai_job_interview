@@ -105,4 +105,23 @@ export async function getFeedbackByInterviewId(
     return {id: feedbackDoc.id, ...feedbackDoc.data()} as Feedback;
 }
 
+export async function getAllFeedbacksByInterviewId(
+    params: GetFeedbackByInterviewIdParams
+): Promise<Feedback[]> {
+    const {interviewId, userId} = params;
+
+    const querySnapshot = await db
+        .collection("feedback")
+        .where("interviewId", "==", interviewId)
+        .where("userId", "==", userId)
+        .orderBy("createdAt", "desc")
+        .get();
+
+    if (querySnapshot.empty) return [];
+
+    return querySnapshot.docs.map(
+        (doc) => ({id: doc.id, ...doc.data()} as Feedback)
+    );
+}
+
 
