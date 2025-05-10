@@ -33,7 +33,7 @@ const FormField = <T extends FieldValues>({
                         {type === "textarea" ? (
                             <Textarea
                                 className={cn(
-                                    "bg-dark-200 rounded-xl px-5 py-3 max-w-[600px] h-[120px]",
+                                    "bg-dark-200 rounded-xl px-5 py-3 max-w-[482px] h-[120px]",
                                     fieldState.error && "border-red-500"
                                 )}
                                 placeholder={placeholder}

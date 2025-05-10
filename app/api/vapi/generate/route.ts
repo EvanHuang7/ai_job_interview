@@ -144,9 +144,9 @@ export async function POST(request: Request) {
     const cleanResume = sanitizeText(dummyResume);
 
     try {
-        const prompt = `Prepare questions for a job interview.
+        const prompt = `Prepare questions for a job interview using candidate's resume, company job description and additional information below.
         Resume: ${cleanResume}
-        Job Description: ${cleanJobDescription}
+        Job description: ${cleanJobDescription}
         The job role is ${role}.
         The job experience level is ${level}.
         The tech stack used in the job is: ${techstack}.
