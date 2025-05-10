@@ -6,7 +6,6 @@ import {getRandomInterviewCover} from "@/lib/utils";
 
 import {getFeedbackByInterviewId, getInterviewById,} from "@/server/interviewService";
 import {getCurrentUser} from "@/server/authService";
-import DisplayTechIcons from "@/components/DisplayTechIcons";
 
 const InterviewDetails = async ({params}: RouteParams) => {
     const {id} = await params;
@@ -36,7 +35,7 @@ const InterviewDetails = async ({params}: RouteParams) => {
                         <h3 className="capitalize">{interview.role} Interview</h3>
                     </div>
 
-                    <DisplayTechIcons techStack={interview.techstack}/>
+                    {/*<DisplayTechIcons techStack={interview.techstack}/>*/}
                 </div>
 
                 <p className="bg-dark-200 px-4 py-2 rounded-lg h-fit">

@@ -3,9 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 import {Button} from "./ui/button";
-import DisplayTechIcons from "./DisplayTechIcons";
 
-import {cn, getRandomInterviewCover} from "@/lib/utils";
+import {getRandomInterviewCover} from "@/lib/utils";
 import {getFeedbackByInterviewId} from "@/server/interviewService";
 
 const InterviewCard = async ({
@@ -38,20 +37,10 @@ const InterviewCard = async ({
     ).format("MMM D, YYYY");
 
     return (
-        <div className="card-border w-[360px] max-sm:w-full min-h-96">
-            <div className="card-interview">
+        <div className="card-border w-[360px] max-sm:w-full min-h-75">
+            <div className="dark-gradient rounded-2xl  flex flex-col p-6 relative overflow-hidden gap-10">
                 <div>
-                    {/* Type Badge */}
-                    <div
-                        className={cn(
-                            "absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg",
-                            badgeColor
-                        )}
-                    >
-                        <p className="badge-text ">{normalizedType}</p>
-                    </div>
-
-                    {/* Cover Image */}
+                    {/* Company Image */}
                     <Image
                         src={getRandomInterviewCover()}
                         alt="cover-image"
@@ -60,36 +49,22 @@ const InterviewCard = async ({
                         className="rounded-full object-fit size-[90px]"
                     />
 
-                    {/* Interview Role */}
-                    <h3 className="mt-5 capitalize">{role} Interview</h3>
+                    {/* Company name */}
+                    <h3 className="mt-3 capitalize">Google xxxxxxx xxxxx</h3>
 
-                    {/* Date & Score */}
-                    <div className="flex flex-row gap-5 mt-3">
-                        <div className="flex flex-row gap-2">
-                            <Image
-                                src="/calendar.svg"
-                                width={22}
-                                height={22}
-                                alt="calendar"
-                            />
-                            <p>{formattedDate}</p>
-                        </div>
+                    {/* Role and Score */}
+                    <div className="flex flex-row justify-between gap-5 mt-3">
+                        <h3 className="capitalize">{role}</h3>
 
                         <div className="flex flex-row gap-2 items-center">
                             <Image src="/star.svg" width={22} height={22} alt="star"/>
                             <p>{feedback?.totalScore || "---"}/100</p>
                         </div>
                     </div>
-
-                    {/* Feedback or Placeholder Text */}
-                    <p className="line-clamp-2 mt-5">
-                        {feedback?.finalAssessment ||
-                            "You haven't taken this interview yet. Take it now to improve your skills."}
-                    </p>
                 </div>
 
                 <div className="flex flex-row justify-between">
-                    <DisplayTechIcons techStack={techstack}/>
+                    <p>{formattedDate}</p>
 
                     <Button className="btn-primary">
                         <Link
