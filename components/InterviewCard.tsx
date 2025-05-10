@@ -28,7 +28,7 @@ const InterviewCard = async ({
     const buttonLabel = isFeedbackAvailable ? "Check Feedback" : "View Interview";
 
     return (
-        <div className="card-border w-[360px] max-sm:w-full min-h-75">
+        <div className="card-border max-sm:w-full w-[360px] min-h-75">
             <div className="dark-gradient rounded-2xl flex flex-col p-6 relative overflow-hidden gap-4">
                     {/* Company Image */}
                     <Image

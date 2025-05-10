@@ -1,7 +1,5 @@
 @import "tailwindcss";
-
 @plugin "tailwindcss-animate";
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -173,19 +171,6 @@
   .card-border {
     @apply border-gradient p-0.5 rounded-2xl w-fit;
   }
-
-  .card-cta {
-    @apply flex flex-row dark-gradient rounded-3xl px-16 py-6 items-center justify-between max-sm:px-4;
-  }
-
-  .interviews-section {
-    @apply flex flex-wrap gap-4 max-lg:flex-col w-full items-stretch;
-  }
-
-  .tech-tooltip {
-    @apply absolute bottom-full mb-1 hidden group-hover:flex px-2 py-1 text-xs text-white bg-gray-700 rounded-md shadow-md;
-  }
-
 }
 
 @utility dark-gradient {

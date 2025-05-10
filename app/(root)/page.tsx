@@ -23,7 +23,7 @@ async function Home() {
             <section className="flex flex-col gap-6 mt-8">
                 <h2>New Interviews</h2>
 
-                <div className="interviews-section">
+                <div className="flex flex-wrap gap-4 max-lg:flex-col w-full items-stretch">
                     {hasNewInterviews ? (
                         newInterviews?.map((interview) => (
                             <InterviewCard
@@ -45,7 +45,7 @@ async function Home() {
             <section className="flex flex-col gap-6 mt-8">
                 <h2>Finished Interviews</h2>
 
-                <div className="interviews-section">
+                <div className="flex flex-wrap gap-4 max-lg:flex-col w-full items-stretch">
                     {hasFinishedInterviews ? (
                         finishedFeedback?.map((interview) => (
                             <InterviewCard
