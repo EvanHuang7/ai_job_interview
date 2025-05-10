@@ -27,7 +27,7 @@ const RootLayout = async ({children}: { children: ReactNode }) => {
                     </Button>
                     <Button
                         className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full">
-                        <Link href="/interview">Setting</Link>
+                        <Link href="/profile">Profile</Link>
                     </Button>
                     <Button
                         className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full"

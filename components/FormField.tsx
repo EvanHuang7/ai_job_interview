@@ -2,6 +2,7 @@ import {Control, Controller, FieldValues, Path} from "react-hook-form";
 
 import {FormControl, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
 import {cn} from "@/lib/utils";
 
 interface FormFieldProps<T extends FieldValues> {
@@ -9,7 +10,8 @@ interface FormFieldProps<T extends FieldValues> {
     name: Path<T>;
     label: string;
     placeholder?: string;
-    type?: "text" | "email" | "password";
+    type?: "text" | "email" | "password" | "textarea";
+    disable?: boolean;
 }
 
 const FormField = <T extends FieldValues>({
@@ -18,6 +20,7 @@ const FormField = <T extends FieldValues>({
                                               label,
                                               placeholder,
                                               type = "text",
+                                              disable = false,
                                           }: FormFieldProps<T>) => {
     return (
         <Controller
@@ -27,12 +30,28 @@ const FormField = <T extends FieldValues>({
                 <FormItem>
                     <FormLabel className="!font-normal">{label}</FormLabel>
                     <FormControl>
-                        <Input
-                            className={cn("!bg-dark-200 !rounded-full !min-h-12 !px-5", fieldState.error && "border-red-500")}
-                            type={type}
-                            placeholder={placeholder}
-                            {...field}
-                        />
+                        {type === "textarea" ? (
+                            <Textarea
+                                className={cn(
+                                    "bg-dark-200 rounded-xl px-5 py-3 max-w-[600px] h-[120px]",
+                                    fieldState.error && "border-red-500"
+                                )}
+                                placeholder={placeholder}
+                                {...field}
+                                disabled={disable}
+                            />
+                        ) : (
+                            <Input
+                                className={cn(
+                                    "!bg-dark-200 !rounded-full !min-h-12 !px-5",
+                                    fieldState.error && "border-red-500"
+                                )}
+                                type={type}
+                                placeholder={placeholder}
+                                {...field}
+                                disabled={disable}
+                            />
+                        )}
                     </FormControl>
                     <FormMessage/>
                 </FormItem>
