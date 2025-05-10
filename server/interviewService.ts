@@ -5,7 +5,7 @@ import {google} from "@ai-sdk/google";
 
 import {feedbackSchema} from "@/constants";
 import {db} from "@/lib/firebase/admin";
-
+import {FieldValue} from "firebase-admin/firestore";
 
 export async function getInterviewsByUserId(
     userId: string
@@ -14,25 +14,6 @@ export async function getInterviewsByUserId(
         .collection("interviews")
         .where("userId", "==", userId)
         .orderBy("createdAt", "desc")
-        .get();
-
-    return interviews.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-    })) as Interview[];
-}
-
-export async function getLatestInterviews(
-    params: GetLatestInterviewsParams
-): Promise<Interview[] | null> {
-    const {userId, limit = 20} = params;
-
-    const interviews = await db
-        .collection("interviews")
-        .orderBy("createdAt", "desc")
-        .where("finalized", "==", true)
-        .where("userId", "!=", userId)
-        .limit(limit)
         .get();
 
     return interviews.docs.map((doc) => ({
@@ -90,17 +71,16 @@ export async function createFeedback(params: CreateFeedbackParams) {
             createdAt: new Date().toISOString(),
         };
 
-        let feedbackRef;
+        // Add new feedback to db
+        await db.collection("feedback").add(feedback);
 
-        if (feedbackId) {
-            feedbackRef = db.collection("feedback").doc(feedbackId);
-        } else {
-            feedbackRef = db.collection("feedback").doc();
-        }
+        // Increase interview feedbackNum by 1
+        const interviewRef = db.collection("interviews").doc(interviewId);
+        await interviewRef.update({
+            feedbacksNum: FieldValue.increment(1),
+        });
 
-        await feedbackRef.set(feedback);
-
-        return {success: true, feedbackId: feedbackRef.id};
+        return {success: true};
     } catch (error) {
         console.error("Error saving feedback:", error);
         return {success: false};

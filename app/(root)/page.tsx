@@ -1,19 +1,16 @@
 import InterviewCard from "@/components/InterviewCard";
 
 import {getCurrentUser} from "@/server/authService";
-import {getInterviewsByUserId, getLatestInterviews,} from "@/server/interviewService";
+import {getInterviewsByUserId} from "@/server/interviewService";
 
 
 async function Home() {
     const user = await getCurrentUser();
 
-    const [userInterviews, allInterview] = await Promise.all([
-        getInterviewsByUserId(user?.id!),
-        getLatestInterviews({userId: user?.id!}),
-    ]);
+    const userInterviews = await getInterviewsByUserId(user?.id!);
 
     const hasPastInterviews = userInterviews?.length! > 0;
-    const hasUpcomingInterviews = allInterview?.length! > 0;
+    const hasUpcomingInterviews = userInterviews?.length! > 0;
 
     return (
         <>
@@ -44,7 +41,7 @@ async function Home() {
 
                 <div className="interviews-section">
                     {hasUpcomingInterviews ? (
-                        allInterview?.map((interview) => (
+                        userInterviews?.map((interview) => (
                             <InterviewCard
                                 key={interview.id}
                                 userId={user?.id}
