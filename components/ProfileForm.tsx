@@ -4,7 +4,6 @@ import React, {useState} from "react";
 import {zodResolver} from "@hookform/resolvers/zod"
 import {Controller, useForm} from "react-hook-form"
 import {z} from "zod"
-import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormItem, FormMessage} from "@/components/ui/form"
 import {toast} from "sonner";
@@ -12,7 +11,6 @@ import FormField from "./FormField";
 
 import {updateProfile} from "@/server/authService";
 import {Camera} from "lucide-react";
-import {cn} from "@/lib/utils";
 
 interface ProfileFormProps {
     user: User;
@@ -33,9 +31,6 @@ const ProfileForm = ({
                      }: ProfileFormProps) => {
 
     const [selectedImg, setSelectedImg] = useState("");
-    const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
-
-    const router = useRouter();
 
     const formSchema = profileFormSchema();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -129,10 +124,7 @@ const ProfileForm = ({
                                                     />
                                                     <label
                                                         htmlFor="avatar-upload"
-                                                        className={cn(
-                                                            "absolute bottom-0 right-0 bg-base-content hover:scale-105 p-2 rounded-full cursor-pointer transition-all duration-200",
-                                                            isUpdatingProfile && "animate-pulse pointer-events-none"
-                                                        )}
+                                                        className="absolute bottom-0 right-0 bg-base-content hover:scale-105 p-2 rounded-full cursor-pointer transition-all duration-200"
                                                     >
                                                         <Camera className="w-5 h-5 text-base-200"/>
                                                         <input
@@ -141,14 +133,11 @@ const ProfileForm = ({
                                                             className="hidden"
                                                             accept="image/*"
                                                             onChange={handleImageUpload}
-                                                            disabled={isUpdatingProfile}
                                                         />
                                                     </label>
                                                 </div>
                                                 <p className="text-sm text-zinc-400">
-                                                    {isUpdatingProfile
-                                                        ? "Uploading..."
-                                                        : "Click the camera icon to update your photo"}
+                                                    Click the camera icon to update your photo
                                                 </p>
                                             </div>
                                         </FormControl>
@@ -184,7 +173,7 @@ const ProfileForm = ({
 
                             <Button className="!w-full !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer"
                                     type="submit">
-                                Update Profile
+                                Save Change
                             </Button>
                         </form>
                     </Form>

@@ -2,6 +2,7 @@
 
 import {auth, db} from "@/lib/firebase/admin";
 import {cookies} from "next/headers";
+import cloudinary from "@/lib/cloudinary";
 
 const SESSION_DURATION = 60 * 60 * 24 * 7;
 
@@ -110,14 +111,23 @@ export async function updateProfile(params: UpdateProfileParams) {
     const {userId, name, resume, profilePic} = params;
 
     try {
-        // TODO: check profilePic and upload it to cloadinary
-
         const userRef = db.collection("users").doc(userId);
 
-        await userRef.update({
-            name: name,
-            resume: resume,
-        });
+        if (profilePic) {
+            // Upload base64 profile pic to cloudinary
+            const uploadResult = await cloudinary.uploader.upload(profilePic);
+
+            await userRef.update({
+                name: name,
+                resume: resume,
+                profilePic: uploadResult.secure_url
+            });
+        } else {
+            await userRef.update({
+                name: name,
+                resume: resume,
+            });
+        }
 
         return {
             success: true,
