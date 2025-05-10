@@ -16,17 +16,11 @@ const Feedback = async ({params}: RouteParams) => {
         userId: user?.id!,
     });
 
-
-    return (
-
-        <FeedbackDetail
+    return (<FeedbackDetail
             id={id}
             interview={interview}
             allFeedbacks={allFeedbacks}
-        />
-
-    );
-
+    />);
 };
 
 export default Feedback;
