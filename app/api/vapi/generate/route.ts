@@ -178,11 +178,7 @@ export async function POST(request: Request) {
             feedbacksNum: 0,
         };
 
-        console.log("Interview to save:", interview);
-
-        const ref = await db.collection("interviews").add(interview);
-
-        console.log("Created interview ref:", ref);
+        await db.collection("interviews").add(interview);
 
         return Response.json({success: true}, {status: 200});
     } catch (error) {
