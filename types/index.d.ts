@@ -15,6 +15,8 @@ interface User {
 
 interface Interview {
     id: string;
+    companyName: string;
+    companyLogo: string;
     role: string;
     level: string;
     questions: string[];

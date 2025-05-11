@@ -10,6 +10,8 @@ interface AgentProps {
 interface InterviewCardProps {
     interviewId?: string;
     userId?: string;
+    companyName: string;
+    companyLogo: string;
     role: string;
     type: string;
     techstack: string[];

@@ -2,7 +2,6 @@ import Image from "next/image";
 import {redirect} from "next/navigation";
 
 import Agent from "@/components/Agent";
-import {getRandomInterviewCover} from "@/lib/utils";
 
 import {getFeedbackByInterviewId, getInterviewById,} from "@/server/interviewService";
 import {getCurrentUser} from "@/server/authService";
@@ -26,7 +25,7 @@ const InterviewDetails = async ({params}: RouteParams) => {
                 <div className="flex flex-row gap-4 items-center max-sm:flex-col">
                     <div className="flex flex-row gap-4 items-center">
                         <Image
-                            src={getRandomInterviewCover()}
+                            src={interview.companyLogo || "/company-logo.svg"}
                             alt="cover-image"
                             width={40}
                             height={40}

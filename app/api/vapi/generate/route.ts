@@ -2,7 +2,7 @@ import {generateText} from "ai";
 import {google} from "@ai-sdk/google";
 
 import {db} from "@/lib/firebase/admin";
-import {getRandomInterviewCover, sanitizeText} from "@/lib/utils";
+import {sanitizeText} from "@/lib/utils";
 
 const dummyResume = `Professional Summary
 Experienced Software Developer specializing in AI-powered applications, with proven expertise in GoLang and Angular. Led the development of an innovative communications app at Vendasta, enhancing SMB customer engagement. Adept at mentoring, with a focus on achieving project milestones through teamwork.
@@ -172,7 +172,6 @@ export async function POST(request: Request) {
             techstack: techstack.split(","),
             questions: JSON.parse(questions),
             userId: userid,
-            coverImage: getRandomInterviewCover(),
             createdAt: new Date().toISOString(),
             feedbacksNum: 0,
         };

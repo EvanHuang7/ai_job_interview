@@ -3,12 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 
 import {Button} from "./ui/button";
-import {getRandomInterviewCover} from "@/lib/utils";
 import {getFeedbackByInterviewId} from "@/server/interviewService";
 
 const InterviewCard = async ({
                                  interviewId,
                                  userId,
+                                 companyName,
+                                 companyLogo,
                                  role,
                                  type,
                                  techstack,
@@ -32,7 +33,7 @@ const InterviewCard = async ({
             <div className="dark-gradient rounded-2xl flex flex-col p-6 relative overflow-hidden gap-4">
                     {/* Company Image */}
                     <Image
-                        src={getRandomInterviewCover()}
+                        src={companyLogo || "/company-logo.svg"}
                         alt="cover-image"
                         width={90}
                         height={90}
@@ -40,7 +41,7 @@ const InterviewCard = async ({
                     />
 
                     {/* Company name */}
-                    <h3 className="mt-3 capitalize">Google xxxxxxx xxxxx</h3>
+                <h3 className="mt-3 capitalize">{companyName}</h3>
 
                     {/* Role and Score */}
                     <div className="flex flex-row justify-between gap-5 mt-3">

@@ -1,4 +1,3 @@
-import {interviewCovers} from "@/constants";
 import {type ClassValue, clsx} from "clsx";
 import {twMerge} from "tailwind-merge";
 
@@ -25,9 +24,3 @@ export function sanitizeText(raw: string): string {
       .replace(/\n{2,}/g, "\n\n")                   // Limit consecutive newlines
       .trim();
 }
-
-
-export const getRandomInterviewCover = () => {
-  const randomIndex = Math.floor(Math.random() * interviewCovers.length);
-  return `/covers${interviewCovers[randomIndex]}`;
-};
