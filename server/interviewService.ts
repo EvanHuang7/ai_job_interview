@@ -7,13 +7,13 @@ import {feedbackSchema} from "@/constants";
 import {db} from "@/lib/firebase/admin";
 import {FieldValue} from "firebase-admin/firestore";
 import {sanitizeText} from "@/lib/utils";
+import cloudinary from "@/lib/cloudinary";
 
 export async function generateInterview(params: generateInterviewParams) {
-    // TODO: handle string type techstack.split(",") in front-end
     const {userId, companyName, companyLogo, role, level, type, techstack, amount, jobDescription} = params;
 
     try {
-        // Get user resume, sanitize resume and job description
+        // Get user resume, sanitized resume and job description
         const userRecord = await db
             .collection("users")
             .doc(userId)
@@ -40,15 +40,23 @@ export async function generateInterview(params: generateInterviewParams) {
         Thank you! <3
     `
 
+        // Get interview questions from AI
         const {text: questions} = await generateText({
             model: google("gemini-2.0-flash-001"),
             prompt: prompt,
         });
 
+
+        // Upload base64 companyLogo pic to cloudinary if there is one
+        let uploadResult = {secure_url: ""}
+        if (companyLogo) {
+            uploadResult = await cloudinary.uploader.upload(companyLogo);
+        }
+
         const interview = {
             userId: userId,
             companyName: companyName,
-            companyLogo: companyLogo,
+            companyLogo: uploadResult.secure_url,
             jobDescription: cleanJobDescription,
             role: role,
             level: level,
@@ -61,10 +69,16 @@ export async function generateInterview(params: generateInterviewParams) {
 
         await db.collection("interviews").add(interview);
 
-        return {success: true};
-    } catch (error) {
+        return {
+            success: true,
+            message: "Generate interview successfully",
+        };
+    } catch (error: any) {
         console.error("Error generating interview:", error);
-        return {success: false};
+        return {
+            success: false,
+            message: error.message || "Failed to generate interview",
+        };
     }
 }
 
