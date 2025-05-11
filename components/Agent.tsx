@@ -25,6 +25,7 @@ interface SavedMessage {
 const Agent = ({
                    userName,
                    userId,
+                   profilePic,
                    interviewId,
                    feedbackId,
                    type,
@@ -195,7 +196,7 @@ const Agent = ({
                     <div
                         className="flex flex-col gap-2 justify-center items-center p-7 rounded-2xl min-h-full">
                         <Image
-                            src="/user-avatar.png"
+                            src={profilePic || "profile.svg"}
                             alt="profile-image"
                             width={539}
                             height={539}

@@ -1,6 +1,7 @@
 interface AgentProps {
     userName: string;
     userId?: string;
+    profilePic: string;
     interviewId?: string;
     feedbackId?: string;
     type: "generate" | "interview";

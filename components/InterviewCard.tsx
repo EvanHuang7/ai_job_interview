@@ -45,7 +45,7 @@ const InterviewCard = async ({
 
                     {/* Role and Score */}
                     <div className="flex flex-row justify-between gap-5 mt-3">
-                        <h3 className="capitalize">{role}</h3>
+                        <h4 className="capitalize">{role}</h4>
 
                         {isFeedbackAvailable && (
                             <div className="flex flex-row gap-2 items-center">

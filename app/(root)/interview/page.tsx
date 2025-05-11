@@ -1,6 +1,7 @@
 import Agent from "@/components/Agent";
 import {getCurrentUser} from "@/server/authService";
 
+// TODO: clean up this page and component
 const Page = async () => {
     const user = await getCurrentUser();
 
@@ -11,7 +12,7 @@ const Page = async () => {
             <Agent
                 userName={user?.name!}
                 userId={user?.id}
-                // profileImage={user?.profileURL}
+                profilePic={user?.profilePic}
                 type="generate"
             />
         </>

@@ -146,6 +146,10 @@
     @apply text-2xl font-semibold;
   }
 
+  h4 {
+    @apply text-xl font-semibold;
+  }
+
   ul {
     @apply list-disc list-inside;
   }
