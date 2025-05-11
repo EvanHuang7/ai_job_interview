@@ -17,6 +17,18 @@ interface UpdateProfileParams {
     profilePic: string;
 }
 
+interface generateInterviewParams {
+    userId: string;
+    companyName: string;
+    companyLogo: string;
+    role: string;
+    level: string;
+    type: string;
+    techstack: string[];
+    amount: number;
+    jobDescription: string;
+}
+
 interface CreateFeedbackParams {
     interviewId: string;
     userId: string;

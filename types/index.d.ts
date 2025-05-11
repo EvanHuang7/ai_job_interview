@@ -22,7 +22,6 @@ interface Interview {
     createdAt: string;
     userId: string;
     type: string;
-    finalized: boolean;
     feedbacksNum: number;
 }
 

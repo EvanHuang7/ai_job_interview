@@ -1,11 +1,72 @@
 "use server";
 
-import {generateObject} from "ai";
+import {generateObject, generateText} from "ai";
 import {google} from "@ai-sdk/google";
 
 import {feedbackSchema} from "@/constants";
 import {db} from "@/lib/firebase/admin";
 import {FieldValue} from "firebase-admin/firestore";
+import {sanitizeText} from "@/lib/utils";
+
+export async function generateInterview(params: generateInterviewParams) {
+    // TODO: handle string type techstack.split(",") in front-end
+    const {userId, companyName, companyLogo, role, level, type, techstack, amount, jobDescription} = params;
+
+    try {
+        // Get user resume, sanitize resume and job description
+        const userRecord = await db
+            .collection("users")
+            .doc(userId)
+            .get();
+        if (!userRecord.exists) return null;
+        const userResume = userRecord.data()?.resume
+        const cleanResume = sanitizeText(userResume);
+        const cleanJobDescription = sanitizeText(jobDescription);
+
+        // Build AI prompt
+        const prompt = `Prepare questions for a job interview using candidate's resume, company job description and additional information below.
+        Resume: ${cleanResume}
+        Job description: ${cleanJobDescription}
+        The job role is ${role}.
+        The job experience level is ${level}.
+        The tech stack used in the job is: ${techstack}.
+        The focus between behavioural and technical questions should lean towards: ${type}.
+        The amount of questions required is: ${amount}.
+        Please return only the questions, without any additional text.
+        The questions are going to be read by a voice assistant so do not use "/" or "*" or any other special characters which might break the voice assistant.
+        Return the questions formatted like this:
+        ["Question 1", "Question 2", "Question 3"]
+        
+        Thank you! <3
+    `
+
+        const {text: questions} = await generateText({
+            model: google("gemini-2.0-flash-001"),
+            prompt: prompt,
+        });
+
+        const interview = {
+            userId: userId,
+            companyName: companyName,
+            companyLogo: companyLogo,
+            jobDescription: cleanJobDescription,
+            role: role,
+            level: level,
+            type: type,
+            techstack: techstack,
+            questions: JSON.parse(questions),
+            feedbacksNum: 0,
+            createdAt: new Date().toISOString(),
+        };
+
+        await db.collection("interviews").add(interview);
+
+        return {success: true};
+    } catch (error) {
+        console.error("Error generating interview:", error);
+        return {success: false};
+    }
+}
 
 export async function getInterviewsByUserId(
     userId: string
