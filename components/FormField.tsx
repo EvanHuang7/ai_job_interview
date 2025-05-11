@@ -10,7 +10,7 @@ interface FormFieldProps<T extends FieldValues> {
     name: Path<T>;
     label: string;
     placeholder?: string;
-    type?: "text" | "email" | "password" | "textarea";
+    type?: "text" | "email" | "password" | "textarea" | "number";
     disable?: boolean;
 }
 
@@ -48,7 +48,11 @@ const FormField = <T extends FieldValues>({
                                 )}
                                 type={type}
                                 placeholder={placeholder}
-                                {...field}
+                                value={field.value ?? ""}
+                                onChange={(e) => {
+                                    const value = type === "number" ? Number(e.target.value) : e.target.value;
+                                    field.onChange(value);
+                                }}
                                 disabled={disable}
                             />
                         )}
