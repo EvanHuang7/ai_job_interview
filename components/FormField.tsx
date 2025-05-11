@@ -34,7 +34,7 @@ const FormField = <T extends FieldValues>({
                             <Textarea
                                 className={cn(
                                     "bg-dark-200 rounded-xl px-5 py-3 max-w-[482px] h-[120px]",
-                                    fieldState.error && "border-red-500"
+                                    fieldState.error && "border-red-500", name === "jobDescription" ? "max-w-[750px]" : "max-w-[482px]"
                                 )}
                                 placeholder={placeholder}
                                 {...field}

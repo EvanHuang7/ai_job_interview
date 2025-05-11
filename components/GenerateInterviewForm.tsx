@@ -111,7 +111,7 @@ const GenerateInterviewForm = ({
 
     return (
         <div className="flex items-center justify-center max-sm:px-4 max-sm:py-8 mb-10">
-            <div className="card-border sm:min-w-[400px] md:min-w-[566px] mt-10">
+            <div className="card-border sm:min-w-[600px] md:min-w-[700px] lg:min-w-[800px] mt-10">
                 <div className="flex flex-col gap-6 py-14 px-10 dark-gradient rounded-2xl">
                     <div className="flex flex-col text-center text-primary-100">
                         <h1 className="text-2xl font-semibold ">Generate an interview</h1>
@@ -133,8 +133,8 @@ const GenerateInterviewForm = ({
                                             <div className="flex flex-col items-center gap-4">
                                                 <div className="relative">
                                                     <img
-                                                        src={selectedCompanyLogo || "/profile.svg"}
-                                                        alt="Profile"
+                                                        src={selectedCompanyLogo || "/company-logo.svg"}
+                                                        alt="CompanyLogo"
                                                         className="size-32 rounded-full object-cover border-4"
                                                     />
                                                     <label
