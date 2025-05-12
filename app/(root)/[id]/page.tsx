@@ -1,46 +1,45 @@
-import Image from "next/image";
 import {redirect} from "next/navigation";
 
 import Agent from "@/components/Agent";
 
 import {getInterviewById,} from "@/server/interviewService";
 import {getCurrentUser} from "@/server/authService";
+import {toast} from "sonner";
 
-const InterviewDetails = async ({params}: RouteParams) => {
+const InterviewDetail = async ({params}: RouteParams) => {
     const {id} = await params;
 
-    const user = await getCurrentUser();
+    try {
+        // Get user data
+        const user = await getCurrentUser();
+        // Redirect to sign-in page if user is not authenticated
+        if (!user) {
+            redirect("/sign-in");
+        }
 
-    const interview = await getInterviewById(id);
-    if (!interview) redirect("/");
+        // Fetch interview data
+        const interview = await getInterviewById(id);
+        // Redirect to home if interview not found
+        if (!interview) {
+            redirect("/");
+        }
 
-    return (
-        <>
-            <div className="flex flex-row gap-4 justify-between">
-                <div className="flex flex-row gap-4 items-center max-sm:flex-col">
-                    <div className="flex flex-row gap-4 items-center">
-                        <Image
-                            src={interview.companyLogo || "/company-logo.svg"}
-                            alt="cover-image"
-                            width={40}
-                            height={40}
-                            className="rounded-full object-cover size-[40px]"
-                        />
-                        <h3 className="capitalize">{interview.role} Interview</h3>
-                    </div>
-                </div>
-            </div>
-
-            <Agent
-                userName={user?.name!}
-                userId={user?.id}
-                profilePic={user?.profilePic}
-                interviewId={id}
-                type="interview"
-                questions={interview.questions}
-            />
-        </>
-    );
+        return (
+            <>
+                <Agent
+                    userName={user?.name!}
+                    userId={user?.id}
+                    profilePic={user?.profilePic}
+                    interviewId={id}
+                    interview={interview}
+                    questions={interview.questions}
+                />
+            </>
+        );
+    } catch (error) {
+        console.error("Error getting user or fetching interview:", error);
+        toast.error("There is an error when getting data");
+    }
 };
 
-export default InterviewDetails;
+export default InterviewDetail;

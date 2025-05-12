@@ -15,7 +15,7 @@ interface AgentProps {
     userId?: string;
     profilePic: string;
     interviewId?: string;
-    type: "generate" | "interview";
+    interview?: Interview;
     questions?: string[];
 }
 
@@ -36,6 +36,7 @@ const Agent = ({
                    userId,
                    profilePic,
                    interviewId,
+                   interview,
                    questions,
                }: AgentProps) => {
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -165,6 +166,21 @@ const Agent = ({
 
     return (
         <>
+            <div className="flex flex-row gap-4 justify-between">
+                <div className="flex flex-row gap-4 items-center max-sm:flex-col">
+                    <div className="flex flex-row gap-4 items-center">
+                        <Image
+                            src={interview.companyLogo || "/company-logo.svg"}
+                            alt="cover-image"
+                            width={40}
+                            height={40}
+                            className="rounded-full object-cover size-[40px]"
+                        />
+                        <h3 className="capitalize">{interview.role} Interview</h3>
+                    </div>
+                </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-10 items-center justify-between w-full">
                 {/* AI Interviewer Card */}
                 <div
