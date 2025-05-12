@@ -104,7 +104,7 @@ export async function getInterviewById(id: string): Promise<Interview | null> {
     try {
         const interview = await db.collection("interviews").doc(id).get();
 
-        return interview.data() as Interview | null;
+        return {id: interview.id, ...interview.data()} as Interview | null;
     } catch (error) {
         console.error("Error get interviews by interviewId:", error);
         // Return null if error
