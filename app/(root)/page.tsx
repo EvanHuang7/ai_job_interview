@@ -40,13 +40,7 @@ async function Home() {
                                 <InterviewCard
                                     key={interview.id}
                                     userId={user?.id}
-                                    companyName={interview?.companyName || ""}
-                                    companyLogo={interview?.companyLogo || ""}
-                                    interviewId={interview.id}
-                                    role={interview.role}
-                                    type={interview.type}
-                                    techstack={interview.techstack}
-                                    createdAt={interview.createdAt}
+                                    interview={interview}
                                 />
                             ))
                         ) : (
@@ -64,13 +58,7 @@ async function Home() {
                                 <InterviewCard
                                     key={interview.id}
                                     userId={user?.id}
-                                    interviewId={interview.id}
-                                    companyName={interview?.companyName || ""}
-                                    companyLogo={interview?.companyLogo || ""}
-                                    role={interview.role}
-                                    type={interview.type}
-                                    techstack={interview.techstack}
-                                    createdAt={interview.createdAt}
+                                    interview={interview}
                                 />
                             ))
                         ) : (
