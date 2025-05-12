@@ -24,8 +24,8 @@ const InterviewCard = async ({
 
     const formattedDate = dayjs(interviewDate).format("YYYY, MMM D");
     const interviewUrl = isFeedbackAvailable
-        ? `/interview/${interviewId}/feedback`
-        : `/interview/${interviewId}`;
+        ? `/${interviewId}/feedback`
+        : `/${interviewId}`;
     const buttonLabel = isFeedbackAvailable ? "Check Feedback" : "View Interview";
 
     return (

@@ -28,7 +28,6 @@ const Agent = ({
                    profilePic,
                    interviewId,
                    feedbackId,
-                   type,
                    questions,
                }: AgentProps) => {
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -106,13 +105,9 @@ const Agent = ({
 
     useEffect(() => {
         if (callStatus === CallStatus.FINISHED) {
-            if (type === "generate") {
-                router.push("/");
-            } else {
-                handleGenerateFeedback(messages);
-            }
+            handleGenerateFeedback(messages);
         }
-    }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
+    }, [messages, callStatus, feedbackId, interviewId, router, userId]);
 
     useEffect(() => {
         if (messages.length > 0 && transcriptEndRef.current) {
@@ -123,14 +118,6 @@ const Agent = ({
     const handleCall = async () => {
         setCallStatus(CallStatus.CONNECTING);
 
-        if (type === "generate") {
-            await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
-                variableValues: {
-                    username: userName,
-                    userid: userId,
-                },
-            });
-        } else {
             let formattedQuestions = "";
             if (questions) {
                 formattedQuestions = questions
@@ -143,7 +130,7 @@ const Agent = ({
                     questions: formattedQuestions,
                 },
             });
-        }
+
     };
 
     const handleDisconnect = () => {
