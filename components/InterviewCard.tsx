@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import {Button} from "./ui/button";
 import {getAllFeedbacksByInterviewId} from "@/server/interviewService";
+import {CircleCheck, Gem, Speech} from "lucide-react";
 
 interface InterviewCardProps {
     userId: string;
@@ -15,17 +16,13 @@ const InterviewCard = async ({
                                  interview
                              }: InterviewCardProps) => {
     const interviewId = interview.id
-    const companyName = interview?.companyName || ""
-    const companyLogo = interview?.companyLogo || ""
-    const role = interview.role
-    const createdAt = interview.createdAt
 
     const feedbacks = userId && interviewId
         ? await getAllFeedbacksByInterviewId({interviewId, userId})
         : [];
 
     const isFeedbackAvailable = feedbacks?.length > 0;
-    const interviewDate = feedbacks?.[0]?.createdAt || createdAt || Date.now();
+    const interviewDate = feedbacks?.[0]?.createdAt || interview.createdAt || Date.now();
 
     const formattedDate = dayjs(interviewDate).format("YYYY, MMM D");
     const interviewUrl = isFeedbackAvailable
@@ -34,27 +31,46 @@ const InterviewCard = async ({
     const buttonLabel = isFeedbackAvailable ? "Check Feedback" : "Start Interview";
 
     return (
-        <div className="card-border max-sm:w-full w-[360px] min-h-75">
+        <div className="card-border max-sm:w-full w-[360px] min-h-50">
             <div className="dark-gradient rounded-2xl flex flex-col p-6 relative overflow-hidden gap-4">
-                {/* Company Logo */}
-                <Image
-                    src={companyLogo || "/company-logo.svg"}
-                    alt="company-logo"
-                    width={90}
-                    height={90}
-                    className="rounded-full object-fit size-[90px]"
-                />
+                {/* Company Logo and name */}
+                <h3 className="flex flex-row text-3xl font-semibold">
+                    <Image
+                        src={interview?.companyLogo || "/company-logo.svg"}
+                        alt="company-logo"
+                        width={40}
+                        height={40}
+                        className="rounded-full object-fit size-[40px] mr-3"
+                    />
+                    <span className="capitalize truncate">{interview.companyName}</span>
+                </h3>
 
-                {/* Company name */}
-                <h3 className="mt-3 capitalize">{companyName}</h3>
+                {/* Role and level */}
+                <h4 className="capitalize mt-3 truncate">{interview.role} ({interview.level} Level)</h4>
 
-                {/* Role and Score */}
+                {/* Question Number and Score */}
                 <div className="flex flex-row justify-between gap-5 mt-3">
-                    <h4 className="capitalize">{role}</h4>
+                    <div className="flex flex-row gap-2 items-center">
+                        <Speech size={22}/>
+                        <p className="capitalize">{interview.questions.length} questions</p>
+                    </div>
 
                     {isFeedbackAvailable && (
                         <div className="flex flex-row gap-2 items-center">
-                            <Image src="/star.svg" width={22} height={22} alt="star"/>
+                            {feedbacks?.[0]?.totalScore > 20 ? (
+                                <Gem
+                                    size={22}
+                                    className={
+                                        feedbacks[0].totalScore > 60
+                                            ? "text-yellow-500"
+                                            : feedbacks[0].totalScore > 49
+                                                ? "text-gray-400"
+                                                : "text-red-500"
+                                    }
+                                />
+                            ) : (
+                                <CircleCheck size={22}/>
+                            )}
                             <p>{feedbacks?.[0]?.totalScore}/100</p>
                         </div>
                     )}

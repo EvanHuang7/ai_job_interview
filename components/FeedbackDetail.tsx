@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import {Button} from "./ui/button";
 import {useState} from "react";
-import {Laptop, Speech, UserRound} from "lucide-react";
+import {CircleCheck, Gem, Laptop, Speech, UserRound} from "lucide-react";
 import JobDescriptionDialog from "@/components/JobDescriptionDialog";
 
 interface FeedbackDetailProps {
@@ -86,7 +86,7 @@ const FeedbackDetail = ({
                 <>
                     {/* Overall Score and Date */}
                     <div className="flex flex-row gap-2 items-center">
-                        <Image src="/star.svg" width={22} height={22} alt="star"/>
+                        {currentFeedback.totalScore > 60 ? (<Gem className="" size={22}/>) : (<CircleCheck size={22}/>)}
                         <p>
                             Overall Score:{" "}
                             <span className="font-bold">{currentFeedback.totalScore}</span>/100 - {" "}

@@ -175,7 +175,7 @@ const AiInterview = ({
                             height={40}
                             className="rounded-full object-cover size-[40px]"
                         />
-                        <h3 className="capitalize">{interview.role} Interview</h3>
+                        <h3 className="capitalize">{interview.companyName} & {interview.role} Interview</h3>
                     </div>
                 </div>
             </div>
