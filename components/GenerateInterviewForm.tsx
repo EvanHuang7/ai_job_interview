@@ -83,12 +83,12 @@ const GenerateInterviewForm = ({
         }
     };
 
-    const handleImageUpload = async (event) => {
-        // Get image file of user selected and check it
+    const handleCompanyLogoUpload = async (event) => {
+        // Get company logo file of user selected and check it
         const file = event.target.files[0];
         if (!file) {
-            console.log("Function errored because of no file uploaded");
-            toast.error("Sorry, no file uploaded");
+            console.log("Function errored because of no company logo uploaded");
+            toast.error("Sorry, no company logo uploaded");
             return;
         }
 
@@ -104,7 +104,7 @@ const GenerateInterviewForm = ({
         reader.readAsDataURL(file);
         reader.onload = async () => {
             const base64Image = reader.result;
-            // Set the user selected image to the avator UI
+            // Set the user selected company logo to the logo UI
             setSelectedCompanyLogo(base64Image);
         };
     };
@@ -115,6 +115,7 @@ const GenerateInterviewForm = ({
                 <div className="flex flex-col gap-6 py-14 px-10 dark-gradient rounded-2xl">
                     <div className="flex flex-col text-center text-primary-100">
                         <h1 className="text-2xl font-semibold ">Generate an interview</h1>
+                        <p className="mt-2">Generate an interview with the info below and your profile resume</p>
                     </div>
                     <Form {...form}>
                         <form noValidate onSubmit={form.handleSubmit(onSubmit, (errors) => {
@@ -138,16 +139,16 @@ const GenerateInterviewForm = ({
                                                         className="size-32 rounded-full object-cover border-4"
                                                     />
                                                     <label
-                                                        htmlFor="avatar-upload"
+                                                        htmlFor="company-logo-upload"
                                                         className="absolute bottom-0 right-0 bg-base-content hover:scale-105 p-2 rounded-full cursor-pointer transition-all duration-200"
                                                     >
                                                         <Camera className="w-5 h-5 text-base-200"/>
                                                         <input
                                                             type="file"
-                                                            id="avatar-upload"
+                                                            id="company-logo-upload"
                                                             className="hidden"
                                                             accept="image/*"
-                                                            onChange={handleImageUpload}
+                                                            onChange={handleCompanyLogoUpload}
                                                         />
                                                     </label>
                                                 </div>
@@ -229,7 +230,7 @@ const GenerateInterviewForm = ({
 
                             <Button className="!w-full !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer"
                                     type="submit">
-                                Generate Interview
+                                Generate
                             </Button>
                         </form>
                     </Form>

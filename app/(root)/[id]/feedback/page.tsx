@@ -31,7 +31,6 @@ const Page = async ({params}: RouteParams) => {
 
         return (
             <FeedbackDetail
-                id={id}
                 interview={interview}
                 allFeedbacks={allFeedbacks}
             />

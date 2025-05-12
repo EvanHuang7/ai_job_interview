@@ -106,8 +106,8 @@ const AiInterview = ({
         const handleGenerateFeedback = async (messages: SavedMessage[]) => {
             try {
                 const result = await createFeedback({
-                    interviewId: interviewId!,
-                    userId: userId!,
+                    interviewId: interviewId,
+                    userId: userId,
                     transcript: messages,
                 });
 

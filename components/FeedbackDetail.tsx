@@ -9,13 +9,12 @@ import {useState} from "react";
 import {Building2, Laptop, Speech, UserRound} from "lucide-react";
 
 interface FeedbackDetailProps {
-    id: string;
     interview: Interview;
     allFeedbacks: Feedback[];
 }
 
 const FeedbackDetail = ({
-                            id, interview, allFeedbacks,
+                            interview, allFeedbacks,
                         }: FeedbackDetailProps) => {
 
 
@@ -139,7 +138,7 @@ const FeedbackDetail = ({
 
                 <Button
                     className="text-foreground hover:text-black border bg-transparent rounded-full min-w-[165px] min-h-10 flex-1">
-                    <Link href={`/${id}`} className="flex w-full justify-center">
+                    <Link href={`/${interview.id}`} className="flex w-full justify-center">
                         <p className="text-sm font-semibold  text-center">Retake Interview</p>
                     </Link>
                 </Button>
