@@ -15,7 +15,6 @@ interface AgentProps {
     userId?: string;
     profilePic: string;
     interviewId?: string;
-    feedbackId?: string;
     type: "generate" | "interview";
     questions?: string[];
 }
@@ -37,7 +36,6 @@ const Agent = ({
                    userId,
                    profilePic,
                    interviewId,
-                   feedbackId,
                    questions,
                }: AgentProps) => {
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -117,7 +115,7 @@ const Agent = ({
         if (callStatus === CallStatus.FINISHED) {
             handleGenerateFeedback(messages);
         }
-    }, [messages, callStatus, feedbackId, interviewId, router, userId]);
+    }, [messages, callStatus, interviewId, router, userId]);
 
     useEffect(() => {
         if (messages.length > 0 && transcriptEndRef.current) {
@@ -151,17 +149,16 @@ const Agent = ({
     const handleGenerateFeedback = async (messages: SavedMessage[]) => {
         console.log("handleGenerateFeedback");
 
-        const {success} = await createFeedback({
+        const result = await createFeedback({
             interviewId: interviewId!,
             userId: userId!,
             transcript: messages,
-            feedbackId,
         });
 
-        if (success) {
+        if (result.success) {
             router.push(`/${interviewId}/feedback`);
         } else {
-            console.log("Error saving feedback");
+            console.log("Error creating feedback");
             router.push("/");
         }
     };

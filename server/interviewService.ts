@@ -113,7 +113,7 @@ export async function getInterviewById(id: string): Promise<Interview | null> {
 }
 
 export async function createFeedback(params: CreateFeedbackParams) {
-    const {interviewId, userId, transcript, feedbackId} = params;
+    const {interviewId, userId, transcript} = params;
 
     try {
         // Format AI and user interview conversation messages
@@ -178,32 +178,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
     }
 }
 
-export async function getFeedbackByInterviewId(
-    params: GetFeedbackByInterviewIdParams
-): Promise<Feedback | null> {
-    const {interviewId, userId} = params;
-
-    try {
-        const querySnapshot = await db
-            .collection("feedback")
-            .where("interviewId", "==", interviewId)
-            .where("userId", "==", userId)
-            .limit(1)
-            .get();
-
-        if (querySnapshot.empty) return null;
-
-        const feedbackDoc = querySnapshot.docs[0];
-        return {id: feedbackDoc.id, ...feedbackDoc.data()} as Feedback;
-    } catch (error) {
-        console.error("Error get feedback by interviewId:", error);
-        // Return null if error
-        return null;
-    }
-}
-
 export async function getAllFeedbacksByInterviewId(
-    params: GetFeedbackByInterviewIdParams
+    params: GetAllFeedbacksByInterviewIdParams
 ): Promise<Feedback[]> {
     const {interviewId, userId} = params;
 
@@ -222,8 +198,8 @@ export async function getAllFeedbacksByInterviewId(
         );
     } catch (error) {
         console.error("Error get all feedbacks by interviewId:", error);
-        // Return null if error
-        return null;
+        // Return empty array if error
+        return [];
     }
 }
 

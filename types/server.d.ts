@@ -33,10 +33,9 @@ interface CreateFeedbackParams {
     interviewId: string;
     userId: string;
     transcript: { role: string; content: string }[];
-    feedbackId?: string;
 }
 
-interface GetFeedbackByInterviewIdParams {
+interface GetAllFeedbacksByInterviewIdParams {
     interviewId: string;
     userId: string;
 }

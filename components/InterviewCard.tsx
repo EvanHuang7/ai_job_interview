@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import {Button} from "./ui/button";
-import {getFeedbackByInterviewId} from "@/server/interviewService";
+import {getAllFeedbacksByInterviewId} from "@/server/interviewService";
 
 interface InterviewCardProps {
     interviewId?: string;
@@ -26,12 +26,12 @@ const InterviewCard = async ({
                                  techstack,
                                  createdAt,
                              }: InterviewCardProps) => {
-    const feedback = userId && interviewId
-        ? await getFeedbackByInterviewId({interviewId, userId})
-        : null;
+    const feedbacks = userId && interviewId
+        ? await getAllFeedbacksByInterviewId({interviewId, userId})
+        : [];
 
-    const isFeedbackAvailable = Boolean(feedback);
-    const interviewDate = feedback?.createdAt || createdAt || Date.now();
+    const isFeedbackAvailable = feedbacks?.length > 0;
+    const interviewDate = feedbacks?.[0]?.createdAt || createdAt || Date.now();
 
     const formattedDate = dayjs(interviewDate).format("YYYY, MMM D");
     const interviewUrl = isFeedbackAvailable
@@ -61,7 +61,7 @@ const InterviewCard = async ({
                         {isFeedbackAvailable && (
                             <div className="flex flex-row gap-2 items-center">
                                 <Image src="/star.svg" width={22} height={22} alt="star"/>
-                                <p>{feedback.totalScore}/100</p>
+                                <p>{feedbacks?.[0]?.totalScore}/100</p>
                             </div>
                         )}
                     </div>
