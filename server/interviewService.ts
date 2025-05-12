@@ -9,7 +9,7 @@ import {FieldValue} from "firebase-admin/firestore";
 import {sanitizeText} from "@/lib/utils";
 import cloudinary from "@/lib/cloudinary";
 
-export async function generateInterview(params: generateInterviewParams) {
+export async function generateInterview(params: generateInterviewParams): Promise<GeneralResponse> {
     const {userId, companyName, companyLogo, role, level, type, techstack, amount, jobDescription} = params;
 
     try {
@@ -81,7 +81,7 @@ export async function generateInterview(params: generateInterviewParams) {
 
 export async function getInterviewsByUserId(
     userId: string
-): Promise<Interview[] | null> {
+): Promise<Interview[]> {
     try {
         const interviews = await db
             .collection("interviews")
@@ -95,8 +95,8 @@ export async function getInterviewsByUserId(
         })) as Interview[];
     } catch (error) {
         console.error("Error get interviews by userId:", error);
-        // Return null if error
-        return null;
+        // Return empty array if error
+        return [];
     }
 }
 
@@ -112,7 +112,7 @@ export async function getInterviewById(id: string): Promise<Interview | null> {
     }
 }
 
-export async function createFeedback(params: CreateFeedbackParams) {
+export async function createFeedback(params: CreateFeedbackParams): Promise<GeneralResponse> {
     const {interviewId, userId, transcript} = params;
 
     try {

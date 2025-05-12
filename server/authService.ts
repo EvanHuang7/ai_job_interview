@@ -4,24 +4,28 @@ import {auth, db} from "@/lib/firebase/admin";
 import {cookies} from "next/headers";
 import cloudinary from "@/lib/cloudinary";
 
-const SESSION_DURATION = 60 * 60 * 24 * 7;
+const SESSION_AGE = 60 * 60 * 24 * 7;
 
-export async function signUp(params: SignUpParams) {
+export async function signUp(params: SignUpParams): Promise<GeneralResponse> {
     const {uid, name, email} = params;
 
     try {
         // Check if user already exists
-        const userRecord = await db.collection("users").doc(uid).get();
-        if (userRecord.exists)
+        const userRef = db.collection("users").doc(uid);
+        const userSnapshot = await userRef.get();
+
+        if (userSnapshot.exists) {
             return {
                 success: false,
                 message: "User already exists. Please sign in.",
             };
+        }
 
         // Save new user to db
-        await db.collection("users").doc(uid).set({
+        await userRef.set({
             name,
             email,
+            createdAt: new Date().toISOString(), // Optionally store account creation time
         });
 
         return {
@@ -30,22 +34,22 @@ export async function signUp(params: SignUpParams) {
         };
     } catch (error: any) {
         console.error("Error creating user:", error);
+
         // Handle Firestore email already exists errors
-        if (error.code === "auth/email-already-exists") {
-            return {
-                success: false,
-                message: "This email is already in use",
-            };
-        }
+        const isEmailError =
+            error.code === "auth/email-already-exists" ||
+            error.message?.includes("email-already-exists");
 
         return {
             success: false,
-            message: "Failed to create account. Please try again.",
+            message: isEmailError
+                ? "This email is already in use"
+                : "Failed to create account. Please try again.",
         };
     }
 }
 
-export async function signIn(params: SignInParams) {
+export async function signIn(params: SignInParams): Promise<GeneralResponse> {
     const {email, idToken} = params;
 
     try {
@@ -73,7 +77,7 @@ export async function signIn(params: SignInParams) {
     }
 }
 
-export async function signOut() {
+export async function signOut(): Promise<GeneralResponse> {
     try {
         const cookieStore = await cookies();
         cookieStore.delete("session");
@@ -99,12 +103,12 @@ export async function getCurrentUser(): Promise<User | null> {
         if (!sessionCookie) return null;
 
         // Get the userId by checking session cookie in firebase auth
-        const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
+        const decodedIdToken = await auth.verifySessionCookie(sessionCookie, true);
 
         // Get user from db by userId
         const userRecord = await db
             .collection("users")
-            .doc(decodedClaims.uid)
+            .doc(decodedIdToken.uid)
             .get();
         if (!userRecord.exists) return null;
 
@@ -119,7 +123,7 @@ export async function getCurrentUser(): Promise<User | null> {
     }
 }
 
-export async function isAuthenticated() {
+export async function isAuthenticated(): Promise<boolean> {
     try {
         const user = await getCurrentUser();
         return !!user;
@@ -130,7 +134,7 @@ export async function isAuthenticated() {
     }
 }
 
-export async function updateProfile(params: UpdateProfileParams) {
+export async function updateProfile(params: UpdateProfileParams): Promise<GeneralResponse> {
     const {userId, name, resume, profilePic} = params;
 
     try {
@@ -165,18 +169,18 @@ export async function updateProfile(params: UpdateProfileParams) {
     }
 }
 
-export async function setSessionCookie(idToken: string) {
+export async function setSessionCookie(idToken: string): Promise<GeneralResponse> {
     try {
         const cookieStore = await cookies();
 
         // Create session cookie
         const sessionCookie = await auth.createSessionCookie(idToken, {
-            expiresIn: SESSION_DURATION * 1000, // milliseconds
+            expiresIn: SESSION_AGE * 1000, // milliseconds
         });
 
         // Set cookie in the browser
         cookieStore.set("session", sessionCookie, {
-            maxAge: SESSION_DURATION,
+            maxAge: SESSION_AGE,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             path: "/",

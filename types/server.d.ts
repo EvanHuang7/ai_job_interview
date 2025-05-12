@@ -39,3 +39,8 @@ interface GetAllFeedbacksByInterviewIdParams {
     interviewId: string;
     userId: string;
 }
+
+interface GeneralResponse {
+    success: boolean;
+    message: string;
+}
