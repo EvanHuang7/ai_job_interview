@@ -6,7 +6,15 @@ import Image from "next/image";
 
 import {Button} from "./ui/button";
 import {useState} from "react";
-import {Building2, Laptop, Speech, UserRound} from "lucide-react";
+import {Laptop, Speech, SquareArrowOutUpRight, UserRound} from "lucide-react";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface FeedbackDetailProps {
     interview: Interview;
@@ -27,27 +35,53 @@ const FeedbackDetail = ({
 
     return (
         <section className="flex flex-col gap-8 max-w-5xl mx-auto max-sm:px-4 text-lg leading-7">
+            {/* Interview Info */}
             <div className="flex flex-col gap-4">
-
-                <h3 className="flex flex-row text-4xl font-semibold">
-                    <Building2 className="mr-2" size={40}/>
-                    <span className="capitalize">Google</span>
+                <h3 className="flex flex-row text-3xl font-semibold">
+                    <Image
+                        src={interview.companyLogo || "/company-logo.svg"}
+                        alt="company-logo"
+                        width={40}
+                        height={40}
+                        className="rounded-full object-fit size-[40px] mr-3"
+                    />
+                    <span className="capitalize">{interview.companyName}</span>
                 </h3>
-                <h3 className="flex flex-row text-4xl font-semibold">
-                    <UserRound className="mr-2" size={40}/>
-                    <span className="capitalize">{interview.role}</span>
+                <h3 className="flex flex-row text-3xl font-semibold">
+                    <UserRound className="mr-3" size={40}/>
+                    <span className="capitalize">{interview.role} ({interview.level} Level)</span>
                 </h3>
-                <h3 className="flex flex-row text-4xl font-semibold">
-                    <Laptop className="mr-2" size={40}/>
+                <h3 className="flex flex-row text-3xl font-semibold">
+                    <Laptop className="mr-3" size={40}/>
                     <span className="capitalize">React, Express</span>
                 </h3>
-                <h3 className="flex flex-row text-4xl font-semibold">
-                    <Speech className="mr-2" size={40}/>
-                    <span className="capitalize">{interview.type} Interviews</span>
+                <h3 className="flex flex-row text-3xl font-semibold">
+                    <Speech className="mr-3" size={40}/>
+                    <span
+                        className="capitalize">{interview.type} Type Interviews ({interview.questions.length} questions) </span>
                 </h3>
+                {/* Interview Job Description Dialog */}
+                <Dialog>
+                    <h3 className="flex flex-row text-3xl font-semibold items-center">
+                        <SquareArrowOutUpRight className="mr-3" size={40}/>
+                        <DialogTrigger asChild>
+                            <button className="text-blue-600 underline hover:text-blue-800 font-normal text-left">
+                                Job Description
+                            </button>
+                        </DialogTrigger>
+                    </h3>
+                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                            <DialogTitle>Job Description</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription className="whitespace-pre-wrap text-left mt-4">
+                            {interview.jobDescription}
+                        </DialogDescription>
+                    </DialogContent>
+                </Dialog>
             </div>
 
-            {/* Feedback Buttons */}
+            {/* All Feedback Buttons */}
             <div className="flex flex-wrap gap-2">
                 {allFeedbacks.map((feedback) => (
                     <Button
@@ -71,7 +105,7 @@ const FeedbackDetail = ({
 
             <hr/>
 
-            {/* Feedback Details */}
+            {/* Selected Feedback Details */}
             {currentFeedback && (
                 <>
                     {/* Overall Score and Date */}
