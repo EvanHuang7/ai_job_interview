@@ -35,10 +35,7 @@ export async function generateInterview(params: generateInterviewParams) {
         Please return only the questions, without any additional text.
         The questions are going to be read by a voice assistant so do not use "/" or "*" or any other special characters which might break the voice assistant.
         Return the questions formatted like this:
-        ["Question 1", "Question 2", "Question 3"]
-        
-        Thank you! <3
-    `
+        ["Question 1", "Question 2", "Question 3"]`
 
         // Get interview questions from AI
         const {text: questions} = await generateText({
@@ -53,6 +50,7 @@ export async function generateInterview(params: generateInterviewParams) {
             uploadResult = await cloudinary.uploader.upload(companyLogo);
         }
 
+        // Add newe interview to db
         const interview = {
             userId: userId,
             companyName: companyName,
@@ -66,7 +64,6 @@ export async function generateInterview(params: generateInterviewParams) {
             feedbacksNum: 0,
             createdAt: new Date().toISOString(),
         };
-
         await db.collection("interviews").add(interview);
 
         return {
@@ -85,28 +82,41 @@ export async function generateInterview(params: generateInterviewParams) {
 export async function getInterviewsByUserId(
     userId: string
 ): Promise<Interview[] | null> {
-    const interviews = await db
-        .collection("interviews")
-        .where("userId", "==", userId)
-        .orderBy("createdAt", "desc")
-        .get();
+    try {
+        const interviews = await db
+            .collection("interviews")
+            .where("userId", "==", userId)
+            .orderBy("createdAt", "desc")
+            .get();
 
-    return interviews.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-    })) as Interview[];
+        return interviews.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        })) as Interview[];
+    } catch (error) {
+        console.error("Error get interviews by userId:", error);
+        // Return null if error
+        return null;
+    }
 }
 
 export async function getInterviewById(id: string): Promise<Interview | null> {
-    const interview = await db.collection("interviews").doc(id).get();
+    try {
+        const interview = await db.collection("interviews").doc(id).get();
 
-    return interview.data() as Interview | null;
+        return interview.data() as Interview | null;
+    } catch (error) {
+        console.error("Error get interviews by interviewId:", error);
+        // Return null if error
+        return null;
+    }
 }
 
 export async function createFeedback(params: CreateFeedbackParams) {
     const {interviewId, userId, transcript, feedbackId} = params;
 
     try {
+        // Format AI and user interview conversation messages
         const formattedTranscript = transcript
             .map(
                 (sentence: { role: string; content: string }) =>
@@ -114,6 +124,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
             )
             .join("");
 
+        // Get feedback from AI
         const {object} = await generateObject({
             model: google("gemini-2.0-flash-001", {
                 structuredOutputs: false,
@@ -135,6 +146,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
                 "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
         });
 
+        // Add new feedback to db
         const feedback = {
             interviewId: interviewId,
             userId: userId,
@@ -145,8 +157,6 @@ export async function createFeedback(params: CreateFeedbackParams) {
             finalAssessment: object.finalAssessment,
             createdAt: new Date().toISOString(),
         };
-
-        // Add new feedback to db
         await db.collection("feedback").add(feedback);
 
         // Increase interview feedbackNum by 1
@@ -155,10 +165,16 @@ export async function createFeedback(params: CreateFeedbackParams) {
             feedbacksNum: FieldValue.increment(1),
         });
 
-        return {success: true};
-    } catch (error) {
-        console.error("Error saving feedback:", error);
-        return {success: false};
+        return {
+            success: true,
+            message: "Create feedback successfully",
+        };
+    } catch (error: any) {
+        console.error("Error creating feedback:", error);
+        return {
+            success: false,
+            message: error.message || "Failed to create feedback",
+        };
     }
 }
 
@@ -167,17 +183,23 @@ export async function getFeedbackByInterviewId(
 ): Promise<Feedback | null> {
     const {interviewId, userId} = params;
 
-    const querySnapshot = await db
-        .collection("feedback")
-        .where("interviewId", "==", interviewId)
-        .where("userId", "==", userId)
-        .limit(1)
-        .get();
+    try {
+        const querySnapshot = await db
+            .collection("feedback")
+            .where("interviewId", "==", interviewId)
+            .where("userId", "==", userId)
+            .limit(1)
+            .get();
 
-    if (querySnapshot.empty) return null;
+        if (querySnapshot.empty) return null;
 
-    const feedbackDoc = querySnapshot.docs[0];
-    return {id: feedbackDoc.id, ...feedbackDoc.data()} as Feedback;
+        const feedbackDoc = querySnapshot.docs[0];
+        return {id: feedbackDoc.id, ...feedbackDoc.data()} as Feedback;
+    } catch (error) {
+        console.error("Error get feedback by interviewId:", error);
+        // Return null if error
+        return null;
+    }
 }
 
 export async function getAllFeedbacksByInterviewId(
@@ -185,18 +207,24 @@ export async function getAllFeedbacksByInterviewId(
 ): Promise<Feedback[]> {
     const {interviewId, userId} = params;
 
-    const querySnapshot = await db
-        .collection("feedback")
-        .where("interviewId", "==", interviewId)
-        .where("userId", "==", userId)
-        .orderBy("createdAt", "desc")
-        .get();
+    try {
+        const querySnapshot = await db
+            .collection("feedback")
+            .where("interviewId", "==", interviewId)
+            .where("userId", "==", userId)
+            .orderBy("createdAt", "desc")
+            .get();
 
-    if (querySnapshot.empty) return [];
+        if (querySnapshot.empty) return [];
 
-    return querySnapshot.docs.map(
-        (doc) => ({id: doc.id, ...doc.data()} as Feedback)
-    );
+        return querySnapshot.docs.map(
+            (doc) => ({id: doc.id, ...doc.data()} as Feedback)
+        );
+    } catch (error) {
+        console.error("Error get all feedbacks by interviewId:", error);
+        // Return null if error
+        return null;
+    }
 }
 
 

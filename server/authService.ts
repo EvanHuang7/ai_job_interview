@@ -10,7 +10,7 @@ export async function signUp(params: SignUpParams) {
     const {uid, name, email} = params;
 
     try {
-        // check if user exists in db
+        // Check if user already exists
         const userRecord = await db.collection("users").doc(uid).get();
         if (userRecord.exists)
             return {
@@ -18,7 +18,7 @@ export async function signUp(params: SignUpParams) {
                 message: "User already exists. Please sign in.",
             };
 
-        // save user to db
+        // Save new user to db
         await db.collection("users").doc(uid).set({
             name,
             email,
@@ -30,8 +30,7 @@ export async function signUp(params: SignUpParams) {
         };
     } catch (error: any) {
         console.error("Error creating user:", error);
-
-        // Handle Firebase specific errors
+        // Handle Firestore email already exists errors
         if (error.code === "auth/email-already-exists") {
             return {
                 success: false,
@@ -50,40 +49,59 @@ export async function signIn(params: SignInParams) {
     const {email, idToken} = params;
 
     try {
+        // Check if user exists in firebase auth
         const userRecord = await auth.getUserByEmail(email);
         if (!userRecord)
             return {
                 success: false,
-                message: "User does not exist. Create an account.",
+                message: "User does not exist. Please create an account first.",
             };
 
+        // Set browser session cookie
         await setSessionCookie(idToken);
-    } catch (error: any) {
-        console.error("Error sign in user:", error);
 
         return {
+            success: true,
+            message: "Sign in user successfully.",
+        };
+    } catch (error: any) {
+        console.error("Error sign in user:", error);
+        return {
             success: false,
-            message: "Failed to log into account. Please try again.",
+            message: "Failed to sign in account. Please try again.",
         };
     }
 }
 
 export async function signOut() {
-    const cookieStore = await cookies();
+    try {
+        const cookieStore = await cookies();
+        cookieStore.delete("session");
 
-    cookieStore.delete("session");
+        return {
+            success: true,
+            message: "Sign out user successfully.",
+        };
+    } catch (error: any) {
+        console.error("Error sign out user:", error);
+        return {
+            success: false,
+            message: "Failed to sign out user.",
+        };
+    }
 }
 
 export async function getCurrentUser(): Promise<User | null> {
-    const cookieStore = await cookies();
-
-    const sessionCookie = cookieStore.get("session")?.value;
-    if (!sessionCookie) return null;
-
     try {
+        const cookieStore = await cookies();
+
+        const sessionCookie = cookieStore.get("session")?.value;
+        if (!sessionCookie) return null;
+
+        // Get the userId by checking session cookie in firebase auth
         const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
 
-        // get user info from db
+        // Get user from db by userId
         const userRecord = await db
             .collection("users")
             .doc(decodedClaims.uid)
@@ -95,16 +113,21 @@ export async function getCurrentUser(): Promise<User | null> {
             id: userRecord.id,
         } as User;
     } catch (error) {
-        console.log(error);
-
-        // Invalid or expired session
+        console.error("Error get current user:", error);
+        // Return null if error
         return null;
     }
 }
 
 export async function isAuthenticated() {
-    const user = await getCurrentUser();
-    return !!user;
+    try {
+        const user = await getCurrentUser();
+        return !!user;
+    } catch (error) {
+        console.error("Error check if user authenticated:", error);
+        // Return false if error
+        return false;
+    }
 }
 
 export async function updateProfile(params: UpdateProfileParams) {
@@ -142,21 +165,33 @@ export async function updateProfile(params: UpdateProfileParams) {
     }
 }
 
-// Set session cookie
 export async function setSessionCookie(idToken: string) {
-    const cookieStore = await cookies();
+    try {
+        const cookieStore = await cookies();
 
-    // Create session cookie
-    const sessionCookie = await auth.createSessionCookie(idToken, {
-        expiresIn: SESSION_DURATION * 1000, // milliseconds
-    });
+        // Create session cookie
+        const sessionCookie = await auth.createSessionCookie(idToken, {
+            expiresIn: SESSION_DURATION * 1000, // milliseconds
+        });
 
-    // Set cookie in the browser
-    cookieStore.set("session", sessionCookie, {
-        maxAge: SESSION_DURATION,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        sameSite: "lax",
-    });
+        // Set cookie in the browser
+        cookieStore.set("session", sessionCookie, {
+            maxAge: SESSION_DURATION,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            path: "/",
+            sameSite: "lax",
+        });
+
+        return {
+            success: true,
+            message: "Set session cookie successfully.",
+        };
+    } catch (error: any) {
+        console.error("Error set session cookie:", error);
+        return {
+            success: false,
+            message: "Failed to set session cookie",
+        };
+    }
 }
