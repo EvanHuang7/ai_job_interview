@@ -115,7 +115,7 @@ const GenerateInterviewForm = ({
                 <div className="flex flex-col gap-6 py-14 px-10 dark-gradient rounded-2xl">
                     <div className="flex flex-col text-center text-primary-100">
                         <h1 className="text-2xl font-semibold ">Generate an interview</h1>
-                        <p className="mt-2">Generate an interview with the info below and your profile resume</p>
+                        <p className="mt-2">with your profile resume and the info below</p>
                     </div>
                     <Form {...form}>
                         <form noValidate onSubmit={form.handleSubmit(onSubmit, (errors) => {

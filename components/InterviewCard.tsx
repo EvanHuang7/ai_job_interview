@@ -31,7 +31,7 @@ const InterviewCard = async ({
     const interviewUrl = isFeedbackAvailable
         ? `/${interviewId}/feedback`
         : `/${interviewId}`;
-    const buttonLabel = isFeedbackAvailable ? "Check Feedback" : "View Interview";
+    const buttonLabel = isFeedbackAvailable ? "Check Feedback" : "Start Interview";
 
     return (
         <div className="card-border max-sm:w-full w-[360px] min-h-75">
@@ -39,7 +39,7 @@ const InterviewCard = async ({
                 {/* Company Logo */}
                 <Image
                     src={companyLogo || "/company-logo.svg"}
-                    alt="cover-image"
+                    alt="company-logo"
                     width={90}
                     height={90}
                     className="rounded-full object-fit size-[90px]"

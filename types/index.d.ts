@@ -25,6 +25,7 @@ interface Interview {
     userId: string;
     type: string;
     feedbacksNum: number;
+    jobDescription: string;
 }
 
 interface Feedback {

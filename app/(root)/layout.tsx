@@ -4,7 +4,7 @@ import {redirect} from "next/navigation";
 
 import {isAuthenticated, signOut} from "@/server/authService";
 import {Button} from "@/components/ui/button";
-import {House} from "lucide-react";
+import {House, LogOut, SquarePen, UserRoundPen} from "lucide-react";
 
 const RootLayout = async ({children}: { children: ReactNode }) => {
     const isUserAuthenticated = await isAuthenticated();
@@ -26,15 +26,18 @@ const RootLayout = async ({children}: { children: ReactNode }) => {
                 <div className="flex flex-row items-center gap-2">
                     <Button
                         className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full">
+                        <SquarePen/>
                         <Link href="/generate-interview">Generate Interview</Link>
                     </Button>
                     <Button
                         className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full">
+                        <UserRoundPen/>
                         <Link href="/profile">Profile</Link>
                     </Button>
                     <Button
                         className="flx items-center gap-2 text-foreground hover:text-black border bg-transparent rounded-full"
                         onClick={signOut}>
+                        <LogOut/>
                         <Link href="/sign-in">Logout</Link>
                     </Button>
                 </div>
