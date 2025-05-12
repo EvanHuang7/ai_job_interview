@@ -5,6 +5,17 @@ import Image from "next/image";
 import {Button} from "./ui/button";
 import {getFeedbackByInterviewId} from "@/server/interviewService";
 
+interface InterviewCardProps {
+    interviewId?: string;
+    userId?: string;
+    companyName: string;
+    companyLogo: string;
+    role: string;
+    type: string;
+    techstack: string[];
+    createdAt?: string;
+}
+
 const InterviewCard = async ({
                                  interviewId,
                                  userId,

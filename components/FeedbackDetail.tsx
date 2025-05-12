@@ -139,7 +139,7 @@ const FeedbackDetail = ({
 
                 <Button
                     className="text-foreground hover:text-black border bg-transparent rounded-full min-w-[165px] min-h-10 flex-1">
-                    <Link href={`/interview/${id}`} className="flex w-full justify-center">
+                    <Link href={`/${id}`} className="flex w-full justify-center">
                         <p className="text-sm font-semibold  text-center">Retake Interview</p>
                     </Link>
                 </Button>

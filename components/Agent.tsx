@@ -5,10 +5,20 @@ import {useRouter} from "next/navigation";
 import Image from "next/image";
 
 import {cn} from "@/lib/utils";
-import {vapi} from "@/lib/vapi.sdk";
+import {vapi} from "@/lib/vapi";
 import {interviewer} from "@/constants";
 import {createFeedback} from "@/server/interviewService";
 import {Button} from "@/components/ui/button";
+
+interface AgentProps {
+    userName: string;
+    userId?: string;
+    profilePic: string;
+    interviewId?: string;
+    feedbackId?: string;
+    type: "generate" | "interview";
+    questions?: string[];
+}
 
 enum CallStatus {
     INACTIVE = "INACTIVE",
@@ -149,7 +159,7 @@ const Agent = ({
         });
 
         if (success) {
-            router.push(`/interview/${interviewId}/feedback`);
+            router.push(`/${interviewId}/feedback`);
         } else {
             console.log("Error saving feedback");
             router.push("/");
