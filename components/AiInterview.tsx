@@ -9,14 +9,11 @@ import {vapi} from "@/lib/vapi";
 import {interviewer} from "@/constants";
 import {createFeedback} from "@/server/interviewService";
 import {Button} from "@/components/ui/button";
+import {toast} from "sonner";
 
-interface AgentProps {
-    userName: string;
-    userId?: string;
-    profilePic: string;
-    interviewId?: string;
-    interview?: Interview;
-    questions?: string[];
+interface AiInterviewProps {
+    user: User;
+    interview: Interview;
 }
 
 enum CallStatus {
@@ -26,19 +23,14 @@ enum CallStatus {
     FINISHED = "FINISHED",
 }
 
-interface SavedMessage {
-    role: "user" | "system" | "assistant";
-    content: string;
-}
-
-const Agent = ({
-                   userName,
-                   userId,
-                   profilePic,
-                   interviewId,
+const AiInterview = ({
+                         user,
                    interview,
-                   questions,
-               }: AgentProps) => {
+                     }: AiInterviewProps) => {
+    const userId = user?.id
+    const interviewId = interview?.id
+    const questions = interview?.questions
+
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
     const [messages, setMessages] = useState<SavedMessage[]>([]);
     const [isAiSpeaking, setIsAiSpeaking] = useState(false);
@@ -61,6 +53,7 @@ const Agent = ({
     const router = useRouter();
     const transcriptEndRef = useRef<HTMLDivElement>(null);
 
+    // Subscribe to VAPI event
     useEffect(() => {
         const onCallStart = () => {
             setCallStatus(CallStatus.ACTIVE);
@@ -73,26 +66,22 @@ const Agent = ({
         const onMessage = (message: Message) => {
             if (message.type === "transcript" && message.transcriptType === "final") {
                 const newMessage = {role: message.role, content: message.transcript};
-                console.log("newMessage in onMessage()", newMessage)
                 setMessages((prev) => [...prev, newMessage]);
             }
         };
 
         const onSpeechStart = () => {
-            console.log("speech start");
             setIsAiSpeaking(true);
         };
 
         const onSpeechEnd = () => {
-            console.log("speech end");
             setIsAiSpeaking(false);
         };
 
         const onError = (error: Error) => {
             // Ignore specific "meeting ended" errors
             if (error?.message?.includes("Meeting has ended")) return;
-
-            console.log("Error:", error);
+            console.error("Error:", error);
         };
 
         vapi.on("call-start", onCallStart);
@@ -112,20 +101,43 @@ const Agent = ({
         };
     }, []);
 
+    // Generate feedback after finishing interview
     useEffect(() => {
+        const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+            try {
+                const result = await createFeedback({
+                    interviewId: interviewId!,
+                    userId: userId!,
+                    transcript: messages,
+                });
+
+                if (result.success) {
+                    router.push(`/${interviewId}/feedback`);
+                } else {
+                    console.error("Error creating feedback");
+                    router.push("/");
+                }
+            } catch (error) {
+                console.error("Error generating feedback:", error);
+                toast.error("An error occurs when generating feedback");
+            }
+        };
+
         if (callStatus === CallStatus.FINISHED) {
             handleGenerateFeedback(messages);
         }
     }, [messages, callStatus, interviewId, router, userId]);
 
+    // Auto scroll the chat history window
     useEffect(() => {
         if (messages.length > 0 && transcriptEndRef.current) {
             transcriptEndRef.current.scrollIntoView({behavior: "smooth"});
         }
     }, [messages]);
 
-    const handleCall = async () => {
-        setCallStatus(CallStatus.CONNECTING);
+    const handleStartInterview = async () => {
+        try {
+            setCallStatus(CallStatus.CONNECTING);
 
             let formattedQuestions = "";
             if (questions) {
@@ -139,33 +151,20 @@ const Agent = ({
                     questions: formattedQuestions,
                 },
             });
-
+        } catch (error) {
+            console.error("Error starting interview:", error);
+            toast.error("An error occurs when starting interview");
+        }
     };
 
-    const handleDisconnect = () => {
+    const handleEndInterview = () => {
         setCallStatus(CallStatus.FINISHED);
         vapi.stop();
     };
 
-    const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-        console.log("handleGenerateFeedback");
-
-        const result = await createFeedback({
-            interviewId: interviewId!,
-            userId: userId!,
-            transcript: messages,
-        });
-
-        if (result.success) {
-            router.push(`/${interviewId}/feedback`);
-        } else {
-            console.log("Error creating feedback");
-            router.push("/");
-        }
-    };
-
     return (
         <>
+            {/* Interview info */}
             <div className="flex flex-row gap-4 justify-between">
                 <div className="flex flex-row gap-4 items-center max-sm:flex-col">
                     <div className="flex flex-row gap-4 items-center">
@@ -182,7 +181,7 @@ const Agent = ({
             </div>
 
             <div className="flex flex-col sm:flex-row gap-10 items-center justify-between w-full">
-                {/* AI Interviewer Card */}
+                {/* AI interviewer card */}
                 <div
                     className="dark-gradient border-2 flex-center flex-col gap-2 p-7 rounded-lg flex-1 sm:basis-1/2 w-full h-[400px]">
                     <div
@@ -200,19 +199,19 @@ const Agent = ({
                     <h3 className="text-center mt-5">Emily</h3>
                 </div>
 
-                {/* User Profile Card */}
+                {/* User card */}
                 <div
                     className="dark-gradient border-2 p-0.5 rounded-2xl flex-1 sm:basis-1/2 w-full h-[400px] max-lg:hidden">
                     <div
                         className="flex flex-col gap-2 justify-center items-center p-7 rounded-2xl min-h-full">
                         <Image
-                            src={profilePic || "profile.svg"}
+                            src={user?.profilePic || "profile.svg"}
                             alt="profile-image"
                             width={539}
                             height={539}
                             className="rounded-full object-cover size-[120px]"
                         />
-                        <h3 className="text-center mt-5">{userName}</h3>
+                        <h3 className="text-center mt-5">{user?.name}</h3>
                     </div>
                 </div>
 
@@ -237,13 +236,12 @@ const Agent = ({
                         <div ref={transcriptEndRef}/>
                     </div>
                 </div>
-
             </div>
 
-
+            {/* Action button */}
             <div className="w-full flex justify-center">
                 {callStatus !== "ACTIVE" ? (
-                    <Button className="relative btn-primary" onClick={() => handleCall()}>
+                    <Button className="relative btn-primary" onClick={() => handleStartInterview()}>
                 <span
                     className={cn(
                         "absolute animate-ping rounded-full opacity-75",
@@ -254,11 +252,11 @@ const Agent = ({
                         <span className="relative">
               {callStatus === "INACTIVE" || callStatus === "FINISHED"
                   ? "Start"
-                  : ". . ."}
+                  : "Connecting"}
             </span>
                     </Button>
                 ) : (
-                    <Button className="btn-primary" variant="destructive" onClick={() => handleDisconnect()}>
+                    <Button className="btn-primary" variant="destructive" onClick={() => handleEndInterview()}>
                         End
                     </Button>
                 )}
@@ -267,4 +265,4 @@ const Agent = ({
     );
 };
 
-export default Agent;
+export default AiInterview;

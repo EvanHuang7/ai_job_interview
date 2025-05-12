@@ -41,3 +41,8 @@ interface Feedback {
     finalAssessment: string;
     createdAt: string;
 }
+
+interface SavedMessage {
+    role: "user" | "system" | "assistant";
+    content: string;
+}

@@ -1,12 +1,11 @@
 import {redirect} from "next/navigation";
 
-import Agent from "@/components/Agent";
-
 import {getInterviewById,} from "@/server/interviewService";
 import {getCurrentUser} from "@/server/authService";
 import {toast} from "sonner";
+import AiInterview from "@/components/AiInterview";
 
-const InterviewDetail = async ({params}: RouteParams) => {
+const Page = async ({params}: RouteParams) => {
     const {id} = await params;
 
     try {
@@ -26,13 +25,9 @@ const InterviewDetail = async ({params}: RouteParams) => {
 
         return (
             <>
-                <Agent
-                    userName={user?.name!}
-                    userId={user?.id}
-                    profilePic={user?.profilePic}
-                    interviewId={id}
+                <AiInterview
+                    user={user}
                     interview={interview}
-                    questions={interview.questions}
                 />
             </>
         );
@@ -42,4 +37,4 @@ const InterviewDetail = async ({params}: RouteParams) => {
     }
 };
 
-export default InterviewDetail;
+export default Page;

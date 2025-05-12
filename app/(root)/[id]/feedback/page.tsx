@@ -5,7 +5,7 @@ import {getCurrentUser} from "@/server/authService";
 import FeedbackDetail from "@/components/FeedbackDetail";
 import {toast} from "sonner";
 
-const Feedback = async ({params}: RouteParams) => {
+const Page = async ({params}: RouteParams) => {
     const {id} = await params;
 
     try {
@@ -42,4 +42,4 @@ const Feedback = async ({params}: RouteParams) => {
     }
 };
 
-export default Feedback;
+export default Page;
