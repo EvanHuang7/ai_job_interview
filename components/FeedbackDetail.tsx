@@ -36,20 +36,20 @@ const FeedbackDetail = ({
                         alt="company-logo"
                         width={40}
                         height={40}
-                        className="rounded-full object-fit size-[40px] mr-3"
+                        className="rounded-full object-fit size-[40px] mr-3 shrink-0"
                     />
                     <span className="capitalize">{interview.companyName}</span>
                 </h3>
                 <h3 className="flex flex-row text-3xl font-semibold">
-                    <UserRound className="mr-3" size={40}/>
+                    <UserRound className="mr-3 shrink-0" size={40}/>
                     <span className="capitalize">{interview.role} ({interview.level} Level)</span>
                 </h3>
                 <h3 className="flex flex-row text-3xl font-semibold">
-                    <Laptop className="mr-3" size={40}/>
-                    <span className="capitalize">React, Express</span>
+                    <Laptop className="mr-3 shrink-0" size={40}/>
+                    <span className="capitalize">{interview.techstack.join(', ')}</span>
                 </h3>
                 <h3 className="flex flex-row text-3xl font-semibold">
-                    <Speech className="mr-3" size={40}/>
+                    <Speech className="mr-3 shrink-0" size={40}/>
                     <span
                         className="capitalize">{interview.type} Type Interviews ({interview.questions.length} questions) </span>
                 </h3>
@@ -63,7 +63,7 @@ const FeedbackDetail = ({
                     <Button
                         key={feedback.id}
                         onClick={() => setSelectedFeedbackId(feedback.id)}
-                        className={`text-foreground border hover:text-black min-w-[275px]  ${
+                        className={`text-foreground border hover:text-black min-w-[294px]  ${
                             selectedFeedbackId === feedback.id
                                 ? "bg-primary/20 text-primary border-primary"
                                 : "bg-transparent border-border"
@@ -73,6 +73,20 @@ const FeedbackDetail = ({
                             <span className="ml-2 bg-green-500/20 text-green-500 text-xs px-2 py-0.5 rounded">
                             Selected
                         </span>
+                        )}
+                        {feedback.totalScore >= 70 ? (
+                            <Gem
+                                size={22}
+                                className={
+                                    feedback.totalScore >= 90
+                                        ? "text-yellow-500"
+                                        : feedback.totalScore >= 80
+                                            ? "text-gray-300"
+                                            : "text-red-500"
+                                }
+                            />
+                        ) : (
+                            <CircleCheck size={22}/>
                         )}
                         {feedback.totalScore}/100 - {dayjs(feedback.createdAt).format("MMM D, h:mm A")}
                     </Button>
@@ -86,7 +100,20 @@ const FeedbackDetail = ({
                 <>
                     {/* Overall Score and Date */}
                     <div className="flex flex-row gap-2 items-center">
-                        {currentFeedback.totalScore > 60 ? (<Gem className="" size={22}/>) : (<CircleCheck size={22}/>)}
+                        {currentFeedback.totalScore >= 70 ? (
+                            <Gem
+                                size={22}
+                                className={
+                                    currentFeedback.totalScore >= 90
+                                        ? "text-yellow-500"
+                                        : currentFeedback.totalScore >= 80
+                                            ? "text-gray-300"
+                                            : "text-red-500"
+                                }
+                            />
+                        ) : (
+                            <CircleCheck size={22}/>
+                        )}
                         <p>
                             Overall Score:{" "}
                             <span className="font-bold">{currentFeedback.totalScore}</span>/100 - {" "}
