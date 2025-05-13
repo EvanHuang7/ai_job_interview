@@ -22,6 +22,9 @@ const InterviewCard = async ({
         : [];
 
     const isFeedbackAvailable = feedbacks?.length > 0;
+    const highestFeedbackScore = feedbacks?.length > 0
+        ? Math.max(...feedbacks.map(f => f.totalScore))
+        : 0;
     const interviewDate = feedbacks?.[0]?.createdAt || interview.createdAt || Date.now();
 
     const formattedDate = dayjs(interviewDate).format("YYYY, MMM D");
@@ -57,21 +60,21 @@ const InterviewCard = async ({
 
                     {isFeedbackAvailable && (
                         <div className="flex flex-row gap-2 items-center">
-                            {feedbacks?.[0]?.totalScore > 20 ? (
+                            {highestFeedbackScore >= 70 ? (
                                 <Gem
                                     size={22}
                                     className={
-                                        feedbacks[0].totalScore > 60
+                                        highestFeedbackScore >= 90
                                             ? "text-yellow-500"
-                                            : feedbacks[0].totalScore > 49
-                                                ? "text-gray-400"
+                                            : highestFeedbackScore >= 80
+                                                ? "text-gray-300"
                                                 : "text-red-500"
                                     }
                                 />
                             ) : (
                                 <CircleCheck size={22}/>
                             )}
-                            <p>{feedbacks?.[0]?.totalScore}/100</p>
+                            <p>{highestFeedbackScore}/100</p>
                         </div>
                     )}
                 </div>
