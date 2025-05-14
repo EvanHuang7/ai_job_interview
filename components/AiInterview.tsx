@@ -252,7 +252,7 @@ const AiInterview = ({
                         <span className="relative">
               {callStatus === "INACTIVE" || callStatus === "FINISHED"
                   ? "Start"
-                  : "Connecting"}
+                  : "Connecting.."}
             </span>
                     </Button>
                 ) : (

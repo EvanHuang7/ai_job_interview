@@ -171,10 +171,12 @@ const ProfileForm = ({
                                 type="textarea"
                             />
 
-                            <Button className="!w-full !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer"
-                                    type="submit">
-                                Save Change
-                            </Button>
+                            <div className="flex justify-end">
+                                <Button className="!w-1/3 !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer"
+                                        type="submit">
+                                    Save Change
+                                </Button>
+                            </div>
                         </form>
                     </Form>
 
