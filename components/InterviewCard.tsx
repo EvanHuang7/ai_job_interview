@@ -25,13 +25,13 @@ const InterviewCard = async ({
     const highestFeedbackScore = feedbacks?.length > 0
         ? Math.max(...feedbacks.map(f => f.totalScore))
         : 0;
-    const interviewDate = feedbacks?.[0]?.createdAt || interview.createdAt || Date.now();
+    const interviewDate = interview.createdAt || Date.now();
 
     const formattedDate = dayjs(interviewDate).format("YYYY, MMM D");
     const interviewUrl = isFeedbackAvailable
         ? `/${interviewId}/feedback`
         : `/${interviewId}`;
-    const buttonLabel = isFeedbackAvailable ? "Check Feedback" : "Start Interview";
+    const buttonLabel = isFeedbackAvailable ? "View Feedback" : "Start Interview";
 
     return (
         <div className="card-border max-sm:w-full w-[360px] min-h-50">
