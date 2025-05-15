@@ -10,6 +10,7 @@ import {interviewer} from "@/constants";
 import {createFeedback} from "@/server/interviewService";
 import {Button} from "@/components/ui/button";
 import {toast} from "sonner";
+import {Loader2} from "lucide-react";
 
 interface AiInterviewProps {
     user: User;
@@ -241,19 +242,27 @@ const AiInterview = ({
             {/* Action button */}
             <div className="w-full flex justify-center">
                 {callStatus !== "ACTIVE" ? (
-                    <Button className="relative btn-primary" onClick={() => handleStartInterview()}>
-                <span
-                    className={cn(
-                        "absolute animate-ping rounded-full opacity-75",
-                        callStatus !== "CONNECTING" && "hidden"
-                    )}
-                />
+                    <Button className="relative btn-primary" onClick={() => handleStartInterview()}
+                            disabled={callStatus === "FINISHED"}>
+                        <span
+                            className={cn(
+                                "absolute animate-ping rounded-full opacity-75",
+                                callStatus !== "CONNECTING" && "hidden"
+                            )}
+                        />
+
+                        {(callStatus === "CONNECTING" || callStatus === "FINISHED") &&
+                            <Loader2 className="animate-spin" size={20}/>}
 
                         <span className="relative">
-              {callStatus === "INACTIVE" || callStatus === "FINISHED"
-                  ? "Start"
-                  : "Connecting.."}
-            </span>
+                          {callStatus === "INACTIVE"
+                              ? "Start"
+                              : callStatus === "CONNECTING"
+                                  ? "Connecting"
+                                  : callStatus === "FINISHED"
+                                      ? "Generating feedback"
+                                      : ""}
+                        </span>
                     </Button>
                 ) : (
                     <Button className="btn-primary" variant="destructive" onClick={() => handleEndInterview()}>
