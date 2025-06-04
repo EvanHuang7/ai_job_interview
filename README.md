@@ -20,7 +20,7 @@
    - [⭐ Set up Cloudinary](#set-up-cloudinary)
    - [⭐ Set Up Environment Variables](#set-up-env-variables)
    - [⭐ Running the Project](#running-project)
-6. ☁️ [Deploy App in Render](#deploy-app)
+6. ☁️ [Deploy App in Vercel](#deploy-app)
 7. 👨‍💼 [About the Author](#about-the-author)
 
 ## <a name="introduction">📋 Introduction</a>
@@ -119,6 +119,8 @@ Create a project in Firebase,
     - Click **Generate key** button, which will download a json file
     - Note down your `project_id`, `private_key` and `client_email`—you'll need them later in the **Set Up Environment Variables step**.
 
+⚠️ **Important**: You may encounter a `missing compound index` error when querying Firestore data. If this happens, simply click the link provided in the error message to automatically create the required compound index. Once the index is built, the app will be able to access the Firestore data successfully.
+
 📌 Note: Feel free to follow any Firebase setup tutorial on YouTube to complete this step.
 
 ### <a name="set-up-cloudinary">⭐ Set up Cloudinary</a>
@@ -158,31 +160,27 @@ npm run dev
 
 Open [http://localhost:3000/](http://localhost:3000/) in your browser to view the project.
 
-## <a name="deploy-app">☁️ Deploy App in Render</a>
+## <a name="deploy-app">☁️ Deploy App in Vercel</a>
 
-Follow these steps to deploy app in Render:
+Follow these steps to deploy app in Vercel:
 
-1. Go to Render.com
+1. Go to Vercel.com
 2. Deploy app
-    - Click **New > Web Service** button on the top right of the page
-    - Select your GitHub Repo for **Git Provider**
-    - Click **Connect** button
-    - Change **Build Command** to `npm run build`
-    - Change **Start Command** to `npm run start`
-    - Select `Free` plan for **Instance Type**
-    - Copy all environment variables except for `NODE_ENV` in your local `.env` file and paste to **Environment Variables** section
+    - Click **Add New > Project** button on the top right of the page
+    - Select your GitHub Repo for **Import Git Repository**
+    - Click **Import** button
+    - Copy all environment variables in your local `.env.local` file and paste to **Environment Variables** section
     - Keep the rest of things by default in this page
-    - Click **Deploy Web Service** button
+    - Click **Deploy** button
 3. 🎉🎉🎉 Check Your Deployed App 🎉🎉🎉
-    - Once deployment is complete, the app’s URL will appear at the top left of the page.
-    - After the service status changes to **Live**, you can fully test the app by signing in as a user.
+    - Once deployment is complete, click the **Visit** button in the top-right corner of the page to open your deployed app. You can fully test the functionality by signing in as a user.
     - If everything is working correctly, **congratulations**—you’ve successfully deployed your app! 🥳🥳🥳
 
 ## <a name="about-the-author">👨‍💼 About the Author</a>
 
-Hi! I'm Evan Huang — a full-stack software developer with 4+ years of experience in web applications, real-time systems, and cloud integration. I’m passionate about building scalable products with clean architecture, elegant UI/UX, and modern technologies like React, Node.js, MongoDB.
+Hi! I'm Evan Huang — a full-stack software developer with 4+ years of experience in web applications, real-time systems, and cloud integration. I’m passionate about building scalable products with clean architecture, elegant UI/UX, and modern technologies like Next.js, Firebase, Google Gemini AI.
 
-This chat app project was completed on **May 4, 2025**, and reflects my focus on full stack development, cloud infrastructure, and responsive design into real-world solutions.
+This chat app project was completed on **May 17, 2025**, and reflects my focus on full stack development, cloud infrastructure, and responsive design into real-world solutions.
 
 Feel free to connect with me in LinkedIn or GitHub!
 
