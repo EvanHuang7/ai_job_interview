@@ -18,7 +18,6 @@
    - [⭐ Packages Installation](#install-packages)
    - [⭐ Create a Project in Firebase](#create-firebase-project)
    - [⭐ Set up Cloudinary](#set-up-cloudinary)
-
    - [⭐ Set Up Environment Variables](#set-up-env-variables)
    - [⭐ Running the Project](#running-project)
 6. ☁️ [Deploy App in Render](#deploy-app)
@@ -118,7 +117,7 @@ Create a project in Firebase,
     - Click **Service accounts** tab
     - Click **Generate new private key** button
     - Click **Generate key** button, which will download a json file
-    - Note down your `project_id`, `project_key_id`, `private_key` and `client_email`—you'll need them later in the **Set Up Environment Variables step**.
+    - Note down your `project_id`, `private_key` and `client_email`—you'll need them later in the **Set Up Environment Variables step**.
 
 📌 Note: Feel free to follow any Firebase setup tutorial on YouTube to complete this step.
 
@@ -128,44 +127,36 @@ Set up your free Cloudinary account and note down your Cloudinary **API key, API
 
 ### <a name="set-up-env-variables">⭐ Set Up Environment Variables</a>
 
-Create a `.env` file under **backend** folder of your project and add the following content:
+Create a `.env.local` file under **ai_job_interview** folder of your project and add the following content:
 
-```env
-PORT = 5001
-MONGODB_URL = 
-JWT_SECRET =
-NODE_ENV = development
+```
+FIREBASE_PROJECT_ID=""
+FIREBASE_PRIVATE_KEY=""
+FIREBASE_CLIENT_EMAIL=""
 
-CLOUDINARY_CLOUD_NAME = 
-CLOUDINARY_API_KEY = 
-CLOUDINARY_API_SECRET = 
+GOOGLE_GENERATIVE_AI_API_KEY=""
+NEXT_PUBLIC_VAPI_WEB_TOKEN=""
 
-STREAM_API_KEY = 
-STREAM_API_SECRET = 
+CLOUDINARY_CLOUD_NAME = ""
+CLOUDINARY_API_KEY = ""
+CLOUDINARY_API_SECRET = ""
 ```
 
-Replace the placeholder values with your actual credentials from MongoDB, Cloudinary, Stream.io.
-  - 📌 Note: For `JWT_SECRET`, you can use `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"` command line to generate a random key for it.
+Replace the placeholder values with your actual credentials from Firbase, Cloudinary, Vapi and Google Gemini (via Google AI Studio).
+  - 📌 Note: Feel free to follow YouTube tutorials on Vapi and Google AI Studio to obtain the required tokens and configuration.
 
 ### <a name="running-project">⭐ Running the Project</a>
 
-Open **two separate terminal windows** and run the following commands to start the frontend and backend servers:
+Open **a terminal window** and run the following commands to start the project:
 
 **Terminal 1** – Start the Client (Vite App):
 
 ```bash
-cd LetsChat/frontend
+cd ai_job_interview
 npm run dev
 ```
 
-**Terminal 2** – Start the Server (Express API):
-
-```bash
-cd LetsChat/backend
-npm run dev
-```
-
-Open [http://localhost:5173/](http://localhost:5173/) in your browser to view the project.
+Open [http://localhost:3000/](http://localhost:3000/) in your browser to view the project.
 
 ## <a name="deploy-app">☁️ Deploy App in Render</a>
 
