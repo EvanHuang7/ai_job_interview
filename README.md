@@ -30,18 +30,14 @@
 
 ## <a name="tech-stack">🛠️ Tech Stack</a>
 
-- **📡 Backend**:
-  - **Node.js, Express.js, JavaScript**,
-  - **MongoDB**
-  - **Cloudinary** for file storage
-- **🖥️ Frontend**:
-  - **React.js, JavaScript**,
-  - **Zustand** for state and API management
-  - **Axios** for for HTTP requests
-  - **Tailwind CSS** & **Daisy UI** for styling
-- **⚙️ Real-Time & Communication**:
-  - **Socket.io** for real-time chat and notifications
-  - **Stream.io** for video calling features
+- **🖥️ Frontend & Backend**:
+  - Next.js, TypeScript
+  - Firebase for authentication and database
+  - Shadcn & Tailwind CSS for UI
+  - React Hook Form + Zod for forms and validation
+- **🤖 AI Tools**:
+  - VAPI AI (voice assistant)
+  - Google Gemini API (AI interaction)
 
 ## <a name="features">🚀 Features</a>
 
