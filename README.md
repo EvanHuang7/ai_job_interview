@@ -41,23 +41,18 @@
 
 ## <a name="features">🚀 Features</a>
 
-**🔐 Authentication**: Secure sign-up and sign-in with email and password, handled by **JWT**.
+**🔐 Authentication**  
+Secure sign-up and sign-in with email and password using **Firebase**.
 
-**🤝 Connect & Chat Privately**: Send and receive real-time friend requests and start private chats — all powered by **Socket.io**.
+**📝 Generate Interview**: Easily generate a mock interview tailored to any company or role by filling out a simple form and pasting the job description.
 
-**👥 Create Groups & Invite Friends**: Create or join a group. As a group admin, invite friends to join and chat together.
+**🤖 Start Interview & Receive Feedback**: Start an AI-powered mock interview and receive a score with detailed, personalized feedback upon completion.
 
-**🎥 Start Video Calls**: Invite friends from private or group chats to join a video call via a system-generated link — powered by **Stream.io**.
+**📂 View All Interviews**: Access all your interviews — both ongoing and completed — directly from the home page.
 
-**🖼️ Send Images & Add Stickers**: Send images in chat and save favorites to your personal sticker list.
+**🔁 Retake Interviews & Review Feedback History**: Revisit finished interviews, review all feedback, and retake interviews to track your improvement over time.
 
-**🔔 Real-Time Notifications**: Receive live message previews when a new message arrives and you're not viewing that conversation.
-
-**📬 Unread Count & Online Status**: See unread message counts and live online status for each conversation.
-
-**📝 Moments Feed**: View, comment on, and like moments from all users — or browse moments from a specific user. Users can also post their own.
-
-**👤 Profile & Theme Settings**: Update your profile image and choose from 32 available themes.
+**👤 Profile Settings**: Upload your resume to help the AI generate more personalized and relevant interview questions.
 
 **🎨 Modern UI/UX**: Clean, intuitive interface designed for clarity and ease of use.
 
