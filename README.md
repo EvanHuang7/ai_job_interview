@@ -16,9 +16,9 @@
    - [⭐ Prerequisites](#prerequisites)
    - [⭐ Cloning the Repository](#clone-repo)
    - [⭐ Packages Installation](#install-packages)
-   - [⭐ Create a Cluster in MongoDB](#create-mongodb-cluster)
+   - [⭐ Create a Project in Firebase](#create-firebase-project)
    - [⭐ Set up Cloudinary](#set-up-cloudinary)
-   - [⭐ Set up Stream.io](#set-up-stream)
+
    - [⭐ Set Up Environment Variables](#set-up-env-variables)
    - [⭐ Running the Project](#running-project)
 6. ☁️ [Deploy App in Render](#deploy-app)
@@ -77,7 +77,7 @@ Make sure you have the following installed on your machine:
 ### <a name="clone-repo">⭐ Cloning the Repository</a>
 
 ```bash
-git clone https://github.com/EvanHuang7/LetsChat.git
+git clone https://github.com/EvanHuang7/ai_job_interview.git
 ```
 
 ### <a name="install-packages">⭐ Packages Installation</a>
@@ -85,29 +85,46 @@ git clone https://github.com/EvanHuang7/LetsChat.git
 Install the project dependencies using npm:
 
 ```bash
-cd LetsChat/backend
-npm install
-cd ..
-cd frontend
+cd ai_job_interview
 npm install
 ```
 
-### <a name="create-mongodb-cluster">⭐ Create a Cluster in MongoDB</a>
+### <a name="create-firebase-project">⭐ Create a Project in Firebase</a>
 
-Create a cluster by selecting a free plan and `Drivers` connection method under a project in MongoDB, and note down your cluster **connection string**—you'll need them later in the **Set Up Environment Variables step**. (Feel free to follow any MongoDB setup tutorial on YouTube to complete this step.)
+Create a project in Firebase, 
 
-⚠️ **Note**: Make sure your MongoDB proejct has public access
-  - Go to **SECURITY > Network Access** tab
-  - Click **ADD IP ADDRESS** button
-  - Click **ALLOW ACCESS FROM ANYWHERE** button
-  - Click **Confirm** button
+- Set up Firebase Authentication
+    - After project created, go to **Build > Authentication** tab
+    - Click **Get started** button
+    - Select `Email/Password` for **Native providers**
+    - Click **Save** button
+- Set up Firestore Database
+    - Go to **Build > Firestore Database** tab
+    - Click **Create database** button
+    - Keep the **Databse ID** as default and select the closest location to you for **Location**
+    - Click **Next** button
+    - Select `Start in production mode`
+    - Click **Create** button
+- Replace `firebaseConfig` in `ai_job_interview/lib/firebase/client.ts` file
+    - Go to **Project Overview** tab
+    - Click `</>` icon (web) button
+    - Enter your desired **App nickname**
+    - Click **Register app** button
+    - Copy your `firebaseConfig` in the script and replace the `firebaseConfig` in `ai_job_interview/lib/firebase/client.ts` file to yours
+    - Click **Continue to console** button
+- Get Firebase Private Key
+    - Click the ⚙️ setting icon the right side of **Project Overview** button
+    - Click **Project settings** button
+    - Click **Service accounts** tab
+    - Click **Generate new private key** button
+    - Click **Generate key** button, which will download a json file
+    - Note down your `project_id`, `project_key_id`, `private_key` and `client_email`—you'll need them later in the **Set Up Environment Variables step**.
+
+📌 Note: Feel free to follow any Firebase setup tutorial on YouTube to complete this step.
 
 ### <a name="set-up-cloudinary">⭐ Set up Cloudinary</a>
 
 Set up your free Cloudinary account and note down your Cloudinary **API key, API Secret and Cloud Name**—you'll need them later in the **Set Up Environment Variables step**. (Feel free to follow any Cloudinary setup tutorial on YouTube to complete this step.)
-
-### <a name="set-up-stream">⭐ Set up Stream.io</a>
-Set up your free Stream.io account and note down your Stream.io **API key, API Secret**—you'll need them later in the **Set Up Environment Variables step**. (Feel free to follow any Stream.io setup tutorial on YouTube to complete this step.)
 
 ### <a name="set-up-env-variables">⭐ Set Up Environment Variables</a>
 
