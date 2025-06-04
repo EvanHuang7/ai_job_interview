@@ -11,7 +11,7 @@
 1. 📋 [Introduction](#introduction)
 2. 🛠️ [Tech Stack](#tech-stack)
 3. 🚀 [Features](#features)
-4. 🧩 [Diagram and Screenshots](#diagram-screenshots)
+4. 📸 [Screenshots](#diagram-screenshots)
 5. ⚙️ [Installation and Start Project](#installation-start-project)
    - [⭐ Prerequisites](#prerequisites)
    - [⭐ Cloning the Repository](#clone-repo)
@@ -41,8 +41,7 @@
 
 ## <a name="features">🚀 Features</a>
 
-**🔐 Authentication**  
-Secure sign-up and sign-in with email and password using **Firebase**.
+**🔐 Authentication**: Secure sign-up and sign-in with email and password using **Firebase**.
 
 **📝 Generate Interview**: Easily generate a mock interview tailored to any company or role by filling out a simple form and pasting the job description.
 
@@ -58,12 +57,11 @@ Secure sign-up and sign-in with email and password using **Firebase**.
 
 **📱 Responsive Design**: Seamlessly adapts to any screen size or device.
 
-## <a name="diagram-screenshots">🧩 Diagram and 📸 Screenshots</a>
+## <a name="diagram-screenshots">📸 Screenshots</a>
 
-- **🧩 Database Tables Diagram**: [drawSQL Diagram Link](https://drawsql.app/teams/evans-projects/diagrams/letschat-app)
-- **📸 Screenshots**: [Miro Link](https://miro.com/app/board/uXjVIs-x_Hc=/?share_link_id=287651094618)
+- **📸 Screenshots**: [Miro Link](https://miro.com/app/board/uXjVIsYJrYw=/?share_link_id=34405013011)
 
-  ![🖼️ Screenshots Preview](https://res.cloudinary.com/dapo3wc6o/image/upload/v1749005825/LetsChat-App_yzbuox.jpg)
+  ![🖼️ Screenshots Preview](https://res.cloudinary.com/dapo3wc6o/image/upload/v1749076130/AI-Job-Interview-Screenshots_idjlmc.jpg)
 
 ## <a name="installation-start-project">📦 Installation and ⚙️ Start Project</a>
 
