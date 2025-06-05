@@ -90,8 +90,6 @@ npm install
 
 ### <a name="create-firebase-project">⭐ Create a Project in Firebase</a>
 
-Create a project in Firebase, 
-
 - Set up Firebase Authentication
     - After project created, go to **Build > Authentication** tab
     - Click **Get started** button
@@ -151,7 +149,7 @@ Replace the placeholder values with your actual credentials from Firbase, Cloudi
 
 Open **a terminal window** and run the following commands to start the project:
 
-**Terminal 1** – Start the Client (Vite App):
+**Terminal** – Start the Project (Next.js App):
 
 ```bash
 cd ai_job_interview
