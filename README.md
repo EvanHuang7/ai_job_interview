@@ -178,7 +178,7 @@ Follow these steps to deploy app in Vercel:
 
 Hi! I'm Evan Huang — a full-stack software developer with 4+ years of experience in web applications, real-time systems, and cloud integration. I’m passionate about building scalable products with clean architecture, elegant UI/UX, and modern technologies like Next.js, Firebase, Google Gemini AI.
 
-This chat app project was completed on **May 17, 2025**, and reflects my focus on full stack development, cloud infrastructure, and responsive design into real-world solutions.
+This AI interview app project was completed on **May 17, 2025**, and reflects my focus on full stack development, cloud infrastructure, and responsive design into real-world solutions.
 
 Feel free to connect with me in LinkedIn or GitHub!
 
