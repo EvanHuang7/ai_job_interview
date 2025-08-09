@@ -2,7 +2,9 @@
   <h3 align="center">🌟 AI Job Interview</h3>
   <p align="center">
     🚀 <a href="https://ai-job-interview-l5wyt5aco-evan-huangs-projects-53e2b658.vercel.app/" target="_blank"><b>Live App</b></a> &nbsp;|&nbsp;
-    📂 <a href="https://github.com/EvanHuang7/ai_job_interview" target="_blank"><b>Source Code</b></a>
+    📂 <a href="https://github.com/EvanHuang7/ai_job_interview" target="_blank"><b>Source Code</b></a> &nbsp;|&nbsp;
+    🐈‍⬛ <a href="https://github.com/EvanHuang7" target="_blank"><b>Author GitHub</b></a> &nbsp;|&nbsp;
+    🅸🅽 <a href="https://www.linkedin.com/in/evan-huang-97336b1a9/" target="_blank"><b>Author LinkedIn</b></a>
   </p>
 </div>
 
